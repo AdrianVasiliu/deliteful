@@ -328,6 +328,7 @@ define(["dcl/dcl",
 						// To avoid flickering, we do not wait for a focus event
 						// to confirm that the child has indeed been focused.
 						this.scrollBy(this.getTopDistance(focused));
+						this._noExtremity = true; // reinit the flag after programatic scroll
 					}
 				} else {
 					this.focusChild(this._getLastCell());
@@ -370,6 +371,7 @@ define(["dcl/dcl",
 						// To avoid flickering, we do not wait for a focus event
 						// to confirm that the child has indeed been focused.
 						this.scrollBy(this.getBottomDistance(focused));
+						this._noExtremity = true; // reinit the flag after programatic scroll
 					}
 				} else {
 					firstCell = this._getFirstCell();
