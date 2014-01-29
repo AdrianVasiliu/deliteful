@@ -21,8 +21,10 @@
 
   			globalStore = new Observable(MemoryStore({data: []}));
  
-  			// Programmatic list: default store, items added before adding the list to the document and before startup
-			list = register.createElement("d-list");
+  			// CASE 1: List's height set using list.style.height = ....
+  			// (OK)
+			// list = register.createElement("d-list");
+			list = new List();
 			list.id = "list-prog-1";
 			list.pageLength = 20;
 			list.style.height = "200px";
@@ -30,6 +32,18 @@
 				list.store.add({label: "Programmatic item of order " + i, righttext: list.id});
 			}
 			document.getElementById("list1Placeholder").appendChild(list);
+			list.startup();
+			
+			// CASE 2: List's height set as style arg of List's ctor
+			// (KO)
+			list = new List({style: "height: 200px"});
+			list.id = "list-prog-1-bis";
+			list.pageLength = 20;
+			// list.style.height = "200px";
+ 			for (i = 0; i < 100; i++) {
+				list.store.add({label: "Programmatic item of order " + i, righttext: list.id});
+			}
+			document.getElementById("list1PlaceholderBis").appendChild(list);
 			list.startup();
 
   			// Programmatic list: default store, items added after the list startup and after adding the list to the document
@@ -116,8 +130,12 @@
  	<input type="text" autofocus>
  	<br>
  	<h1>Programmatic lists</h1>
- 	<h2>Default store, items added before adding the list to the document and before startup (id: list-prog-1)</h2>
+ 	<h2>With List's height set using list.style.height=200px (id: list-prog-1)</h2>
  	<div id="list1Placeholder"></div>
+ 	
+ 	<h2>Same as above, but with {style: "height: 200px"} set as arg of List's ctor (id: list-prog-1-bis)</h2>
+ 	<div id="list1PlaceholderBis"></div>
+ 	
  	<h2>Default store, items added after the list startup and after adding the list to the document (id: list-prog-2)</h2>
  	<div id="list2Placeholder"></div>
  	<h2>Memory store, items added before adding the list to the document and before startup (id: list-prog-3)</h2>

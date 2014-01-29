@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+	<title>Dojo Toolkit - Button test page</title>
+
+<!--
+	<link href="../icons/commonIcons.css" rel="stylesheet"/>
+-->
+	<!-- For testing purposes.  Real applications should load the AMD loader directly -->
+	<script type="text/javascript" src="../../../../delite/tests/boilerplate.js"></script>
+
+	<script type="text/javascript">
+		require([
+			"deliteful/Button",
+			"dojo/domReady!"
+		], function (Button) {
+			var myButton1 = new Button({label: "MyButton1"}).placeAt("myButtonContainer1");
+			myButton1.style.height = "200px";
+			myButton1.startup();
+			
+			var myButton2 = new Button({label: "MyButton2", style: "height: 200px"}).placeAt("myButtonContainer2");
+			myButton2.startup();
+		});
+	</script>
+
+	<style>
+	</style>
+</head>
+<body>
+	<div id="myButtonContainer1"></div>
+	<div id="myButtonContainer2"></div>
+</body>
+</html>
