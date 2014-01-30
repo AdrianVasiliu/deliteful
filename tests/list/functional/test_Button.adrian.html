@@ -16,11 +16,14 @@
 			"deliteful/Button",
 			"dojo/domReady!"
 		], function (Button) {
-			var myButton1 = new Button({label: "MyButton1"}).placeAt("myButtonContainer1");
+			var myButton1 = new Button();
+			myButton1.label = "MyButton1";
 			myButton1.style.height = "200px";
+			myButton1.placeAt("myButtonContainer1");
 			myButton1.startup();
 			
-			var myButton2 = new Button({label: "MyButton2", style: "height: 200px"}).placeAt("myButtonContainer2");
+			var myButton2 = new Button({label: "MyButton2", style: "height: 200px"});
+			myButton2.placeAt("myButtonContainer2");
 			myButton2.startup();
 		});
 	</script>
