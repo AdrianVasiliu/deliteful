@@ -38,7 +38,7 @@ define([
 		
 		/**
 		 * The name of the CSS class of this widget.
-		 * @type {string}
+		 * @member {string}
 		 * @default "d-scrollable-container"
 		 */
 		baseClass: "d-scrollable-container"
