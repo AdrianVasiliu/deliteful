@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<title>Linear Layout</title>
+
+	<link rel="stylesheet" href="../../delite/themes/defaultapp.css">
+
+	<script type="text/javascript" src="../../requirejs/require.js"></script>
+
+	<script type="text/javascript">
+		require({
+			baseUrl: "../.."
+		},[
+			"deliteful/LinearLayout",
+			"delite/register",
+			"deliteful/ScrollableContainer",
+			"deliteful/list/List",
+			"dojo/domReady!"
+		], function(LinearLayout, register){
+			register.parse();
+		});
+	</script>
+</head>
+<body>
+	<d-linear-layout style="height: 100%">
+	
+		<!-- ADRIAN: ScrollableContainer as indirect child of LinearLayout -->
+		<!-- These style attributes make it work OK on desktop: -->
+		<!-- (note the display: flex and width: 100%) -->
+		<div style="background-color: red; display: flex;" class="fill">
+			<!-- ADRIAN: width:100% needed to have it sized OK on desktop -->
+			<d-scrollable-container style="width: 100%" id="aaa">
+			<ul>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+				<li>AAA</li>
+				<li>BBB</li>
+				<li>CCC</li>
+				<li>DDD</li>
+			</ul>
+		</d-scrollable-container>
+		</div>
+		
+		<div style="background-color: blue">Dojo</div>
+		<div style="background-color: #ffff00">Dojo</div>
+	</d-linear-layout>
+</body>
+</html>
+
