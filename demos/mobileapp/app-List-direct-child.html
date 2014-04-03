@@ -75,7 +75,8 @@
 	</d-linear-layout>
 	<!-- Main content (ViewStack) -->
 	
-	<d-view-stack is="d-view-stack" id="vs" class="width100 fill">
+	<!-- ADRIAN: modified ViewStack theme by removing overflow-y: hidden set by d-view-stack -->
+	<d-view-stack is="d-view-stack" id="vs" style="overflow-y: visible" class="width100 fill">
 		<!-- ADRIAN: deliteful/List as direct child of ViewStack -->
 		<d-list id="aaa"></d-list>
 		<div id="bbb">
