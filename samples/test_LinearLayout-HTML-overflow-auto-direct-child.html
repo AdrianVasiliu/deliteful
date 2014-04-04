@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<title>Linear Layout</title>
+
+	<link rel="stylesheet" href="../../delite/themes/defaultapp.css">
+
+	<script type="text/javascript" src="../../requirejs/require.js"></script>
+
+	<script type="text/javascript">
+		require({
+			baseUrl: "../.."
+		},[
+			"deliteful/LinearLayout",
+			"delite/register",
+			"dojo/domReady!"
+		], function(LinearLayout, register){
+			register.parse();
+		});
+	</script>
+</head>
+<body>
+	<d-linear-layout style="height: 100%">
+			<!-- ADRIAN: DIV with overflow:auto as direct child of LinearLayout -->
+			<div style="overflow: auto; background-color: red;" class="fill">
+				<ul>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+					<li>AAA</li>
+					<li>BBB</li>
+					<li>CCC</li>
+					<li>DDD</li>
+				</ul>
+			</div>
+		
+		<div style="background-color: blue">Dojo</div>
+		<div style="background-color: #ffff00">Dojo</div>
+	</d-linear-layout>
+</body>
+</html>
+
