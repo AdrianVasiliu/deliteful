@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>Mobile App</title>
+<head>
+	
+<style>
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#container {
+	display: -webkit-flex;
+	display: flex;
+	/* display: -moz-box; NO, bad on FF */
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-direction: column;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-ms-box-orient: vertical;
+	width: 100%;
+	height: 100%;
+}
+
+#container header {
+	background-color: gray;
+}
+.main {
+	/* -webkit-flex: 1 1 auto; */
+	-webkit-flex: 1;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	min-height: 0px;
+	background-color: yellow;
+	position: relative;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	/* height: 100% breaks it on Chrome/desktop! */
+}
+#container footer {
+	background-color: gray;
+}
+.nativescroll {
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translate3d(0,0,0);
+	width: 100%;
+	height: 100%;
+}
+</style>
+</head>
+
+<body>
+<section id="container">
+	<header id="header">This is a header</header>
+	<div class="main">
+		<!-- ADRIAN: scrollable DIV as indirect child of the flexbox container -->
+		<article class="nativescroll">
+			1<br/>
+			2<br/>
+			3<br/>
+			4<br/>
+			5<br/>
+			6<br/>
+			7<br/>
+			8<br/>
+			9<br/>
+			10<br/>
+			11<br/>
+			12<br/>
+			13<br/>
+			14<br/>
+			15<br/>
+			16<br/>
+			17<br/>
+			18<br/>
+			19<br/>
+			20<br/>
+			21<br/>
+			22<br/>
+			23<br/>
+			24<br/>
+			25<br/>
+			26<br/>
+			27<br/>
+			28<br/>
+			29<br/>
+			30<br/>
+			31<br/>
+			32<br/>
+			33<br/>
+			34<br/>
+			35<br/>
+			36<br/>
+			37<br/>
+			38<br/>
+			39<br/>
+			40<br/>
+			51<br/>
+			52<br/>
+			53<br/>
+			54<br/>
+			55<br/>
+			56<br/>
+			57<br/>
+			58<br/>
+			59<br/>
+			60<br/>
+			61<br/>
+			62<br/>
+			63<br/>
+			64<br/>
+			65<br/>
+			66<br/>
+			67<br/>
+			68<br/>
+			69<br/>
+			70<br/>
+			81<br/>
+			82<br/>
+			83<br/>
+			84<br/>
+			85<br/>
+			86<br/>
+			87<br/>
+			88<br/>
+			89<br/>
+			90<br/>
+			91<br/>
+			92<br/>
+			93<br/>
+			94<br/>
+			95<br/>
+			96<br/>
+			97<br/>
+			98<br/>
+			99<br/>
+			100<br/>
+		</article>
+	</div>
+	<footer id="footer" >This is a footer</footer>
+	<!-- also works with div:
+	<div id="footer" >This is a footer</div>
+	-->
+</section>
+</body>
+</html>
