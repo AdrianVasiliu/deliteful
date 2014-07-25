@@ -23,7 +23,7 @@ define(["intern!object",
 		return remote
 				.elementById(updateId)
 				.execute(updateId + ".scrollIntoView(true);")
-				.then(function (value) {
+				.then(function () {
 					return remote.click()
 						.end()
 						.elementById(selectId)
