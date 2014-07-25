@@ -25,7 +25,6 @@ define(["intern!object",
 				.execute(updateId + ".scrollIntoView(true);")
 				.then(function () {
 					return remote.click()
-					.click()
 						.end()
 						.elementById(selectId)
 						.elementsByTagName("OPTION")
@@ -34,7 +33,7 @@ define(["intern!object",
 								selectId + " number of options is not the expected one");
 						});
 				});
-	};
+		};
 	
 	// Check the state of the widget after selecting options using the keyboard.
 	// The most important is checking that the delite/Selection parent class
