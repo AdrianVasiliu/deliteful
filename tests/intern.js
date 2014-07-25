@@ -18,12 +18,12 @@ define({
 		// Desktop.
 		// Not running on IE9 since Widget-attr test depends on domClass methods only available in IE10_
 		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ],
-			name : "deliteful", nonSyntheticWebClick: "true"},
+			name : "deliteful", nonSyntheticWebClick: "false"},
 
 		// Mobile
 		{ browserName: "iphone 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPhone",
 			app: "safari", device: "iPhone Simulator",
-			name: "deliteful", nonSyntheticWebClick: "true"}
+			name: "deliteful", nonSyntheticWebClick: "false"}
 		
 		/* For now disabled to avoid webdriver/sauce issues
 		{ browserName: "ipad 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPad",
