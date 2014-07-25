@@ -22,9 +22,10 @@ define(["intern!object",
 		remote, selectId, updateId, expectedNumberOfOptions) {
 		return remote
 				.elementById(updateId)
-				.execute(updateId + ".scrollIntoView(true);")
+				/*.execute(updateId + ".scrollIntoView(true);")
 				.then(function () {
-					return remote.click()
+					return remote.click()*/
+					.click()
 						.end()
 						.elementById(selectId)
 						.elementsByTagName("OPTION")
@@ -32,7 +33,7 @@ define(["intern!object",
 							assert.strictEqual(result.length, expectedNumberOfOptions,
 								selectId + " number of options is not the expected one");
 						});
-				});
+				//});
 	};
 	
 	// Check the state of the widget after selecting options using the keyboard.
