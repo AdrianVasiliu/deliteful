@@ -8,6 +8,10 @@ define({
 
 	proxyUrl: "http://127.0.0.1:9000/",
 
+	capabilities: {
+		"appium-version": "1.1"
+	},
+	
 	// Browsers to run integration testing against. Note that version numbers must be strings if used with Sauce
 	// OnDemand. Options that will be permutated are browserName, version, platform, and platformVersion; any other
 	// capabilities options specified for an environment will be copied as-is
@@ -26,11 +30,11 @@ define({
 			name : "deliteful"},
 		{ browserName: "chrome", version: "32", platform: [ /*"OS X 10.6", "Linux", */ "Windows 7" ],
 			name : "deliteful"},
-		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ], name : "deliteful", "appium-version": "1.1"},
+		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ], name : "deliteful"},
 
 		// Mobile
 		{ browserName: "iphone 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPhone",
-			app: "safari", device: "iPhone Simulator", name: "deliteful", "appium-version": "1.1"}
+			app: "safari", device: "iPhone Simulator", name: "deliteful"}
 		
 		/* For now disabled to avoid webdriver/sauce issues
 		{ browserName: "ipad 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPad",
