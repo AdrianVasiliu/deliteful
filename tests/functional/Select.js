@@ -22,13 +22,16 @@ define(["intern!object",
 		remote, selectId, updateId, expectedNumberOfOptions) {
 		return remote
 				.elementById(updateId)
-				.click()
-				.end()
-				.elementById(selectId)
-				.elementsByTagName("OPTION")
-				.then(function (result) {
-					assert.strictEqual(result.length, expectedNumberOfOptions,
-						selectId + " number of options is not the expected one");
+				.execute(updateId + ".scrollIntoView(true);")
+				.then(function (value) {
+					return remote.click()
+						.end()
+						.elementById(selectId)
+						.elementsByTagName("OPTION")
+						.then(function (result) {
+							assert.strictEqual(result.length, expectedNumberOfOptions,
+								selectId + " number of options is not the expected one");
+						});
 				});
 	};
 	
