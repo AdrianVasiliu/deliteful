@@ -1,6 +1,6 @@
 //Listing of all the deliteful unit tests
 define([
-	"./LinearLayout-direction",
+	/*"./LinearLayout-direction",
 	"./LinearLayout-horizontal",
 	"./LinearLayout-horizontal-3width",
 	"./LinearLayout-horizontal-mixedwidth",
@@ -15,6 +15,6 @@ define([
 	"./ProgressIndicator",
 	"./Toaster",
 	"./ToasterMessage",
-	"./ToasterMessage-insert-show-hide-remove",
+	"./ToasterMessage-insert-show-hide-remove",*/
 	"./Select"
 ]);
