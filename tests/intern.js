@@ -26,11 +26,11 @@ define({
 			name : "deliteful"},
 		{ browserName: "chrome", version: "32", platform: [ /*"OS X 10.6", "Linux", */ "Windows 7" ],
 			name : "deliteful"},
-		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ], name : "deliteful"},
+		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ], name : "deliteful", "appium-version": "1.1"},
 
 		// Mobile
 		{ browserName: "iphone 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPhone",
-			app: "safari", device: "iPhone Simulator", name: "deliteful" }
+			app: "safari", device: "iPhone Simulator", name: "deliteful", "appium-version": "1.1"}
 		
 		/* For now disabled to avoid webdriver/sauce issues
 		{ browserName: "ipad 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPad",
