@@ -47,8 +47,10 @@
 			};
 			
 			removeOptions = function (select) {
-				var option = select.store.data[0]; // holds for the dstore/Memory used in this test
-				select.store.remove(select.store.getIdentity(option));
+				if (select.store) {
+					var option = select.store.data[0]; // holds for the dstore/Memory used in this test
+					select.store.remove(select.store.getIdentity(option));
+				}
 			};
 			
 			var removeAllOptions = function (select) {
