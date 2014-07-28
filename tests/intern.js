@@ -7,7 +7,7 @@ define({
 	proxyPort: 9000,
 
 	proxyUrl: "http://127.0.0.1:9000/",
-	
+
 	// Browsers to run integration testing against. Note that version numbers must be strings if used with Sauce
 	// OnDemand. Options that will be permutated are browserName, version, platform, and platformVersion; any other
 	// capabilities options specified for an environment will be copied as-is
@@ -17,15 +17,20 @@ define({
 
 		// Desktop.
 		// Not running on IE9 since Widget-attr test depends on domClass methods only available in IE10_
-		/* { browserName: "safari", version: "7", platform: [ "OS X 10.9" ],
-			name : "deliteful", 
-			// nonSyntheticWebClick: "false", safariAllowPopups: "true"
-		},*/
+		{ browserName: "internet explorer", version: "11", platform: "Windows 8.1", requireWindowFocus: "true",
+			name : "deliteful"},
+		{ browserName: "internet explorer", version: "10", platform: "Windows 8", requireWindowFocus: "true",
+			name : "deliteful"},
+		// { browserName: "internet explorer", version: "9", platform: "Windows 7" },
+		{ browserName: "firefox", version: "25", platform: [ /*"OS X 10.6", "Linux", */ "Windows 7" ],
+			name : "deliteful"},
+		{ browserName: "chrome", version: "32", platform: [ /*"OS X 10.6", "Linux", */ "Windows 7" ],
+			name : "deliteful"},
+		{ browserName: "safari", version: "7", platform: [ "OS X 10.9" ], name : "deliteful"},
 
 		// Mobile
 		{ browserName: "iphone 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPhone",
-			app: "safari", device: "iPhone Simulator",
-			name: "deliteful", /* nonSyntheticWebClick: "false", safariAllowPopups: "true" */}
+			app: "safari", device: "iPhone Simulator", name: "deliteful" }
 		
 		/* For now disabled to avoid webdriver/sauce issues
 		{ browserName: "ipad 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPad",
