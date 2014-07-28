@@ -35,6 +35,7 @@ define(["intern!object",
 				});
 	};*/
 	
+	/*
 	var updateAndCheckNumberOfOptions = function (
 		remote, selectId, updateId, expectedNumberOfOptions) {
 		return remote
@@ -49,11 +50,12 @@ define(["intern!object",
 						selectId + " number of options is not the expected one");
 				});
 	};
+	*/
 	
 	var updateAndCheckNumberOfOptions = function (
 		remote, selectId, updateId, expectedNumberOfOptions) {
 		return remote
-				.execute("updateOptions(" + selectId + ");")
+				.execute("updateOptions(" + selectId + "); " + selectId + ".deliver();")
 				.elementById(selectId)
 				.elementsByTagName("OPTION")
 				.then(function (result) {
