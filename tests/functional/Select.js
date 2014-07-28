@@ -55,7 +55,8 @@ define(["intern!object",
 	var updateAndCheckNumberOfOptions = function (
 		remote, selectId, updateId, expectedNumberOfOptions) {
 		return remote
-				.execute("updateOptions(" + selectId + "); " + selectId + ".deliver();")
+				// .execute("updateOptions(" + selectId + "); " + selectId + ".deliver();")
+				.execute("updateOptions(" + selectId + "); ")
 				.elementById(selectId)
 				.elementsByTagName("OPTION")
 				.then(function (result) {
