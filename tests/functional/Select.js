@@ -50,6 +50,18 @@ define(["intern!object",
 				});
 	};
 	
+	var updateAndCheckNumberOfOptions = function (
+		remote, selectId, updateId, expectedNumberOfOptions) {
+		return remote
+				.execute("updateOptions(" + selectId + ");")
+				.elementById(selectId)
+				.elementsByTagName("OPTION")
+				.then(function (result) {
+					assert.strictEqual(result.length, expectedNumberOfOptions,
+						selectId + " number of options is not the expected one");
+				});
+	};
+	
 	// Check the state of the widget after selecting options using the keyboard.
 	// The most important is checking that the delite/Selection parent class
 	// is correctly kept in sync (that is, its selectedItem/selectedItems

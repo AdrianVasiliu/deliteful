@@ -24,7 +24,7 @@ define({
 
 		// Mobile
 		{ browserName: "iphone 7.1 simulator", platform: "OS X 10.9", version: "7.1", deviceName: "iPhone",
-			app: "safari", device: "iPhone Simulator", "appium-version": "1.2",
+			app: "safari", device: "iPhone Simulator",
 			name: "deliteful", /* nonSyntheticWebClick: "false", safariAllowPopups: "true" */}
 		
 		/* For now disabled to avoid webdriver/sauce issues
