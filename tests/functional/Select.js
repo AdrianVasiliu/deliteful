@@ -60,7 +60,7 @@ define(["intern!object",
 				// .execute(selectId + ".deliver(); updateOptions(" + selectId + "); "
 				//	+ selectId + ".deliver();")
 				// .execute("updateOptions(" + selectId + "); ")
-				// .elementById(selectId)
+				.elementById(selectId)
 				.elementsByTagName("OPTION")
 				.then(function (result) {
 					assert.strictEqual(result.length, expectedNumberOfOptions,
