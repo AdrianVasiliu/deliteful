@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport"
+		  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+
+	<title>deliteful/ComboBox (programmatic)</title>
+
+	<script type="text/javascript" src="../../requirejs/require.js"></script>
+
+	<script type="text/javascript">
+		require.config({
+			baseUrl: "../../"
+		});
+	</script>
+
+	<script type="text/javascript">
+		require([
+			"dstore/Memory",
+			"delite/register",
+			"deliteful/ComboBox",
+			"deliteful/list/List",
+			"delite/theme!delite/themes/{{theme}}/global.css", // page level CSS
+			"requirejs-domready/domReady!"
+		], function (Memory, register, ComboBox, List) {
+			register.parse();
+			
+			var dataStore = new Memory(
+				{idProperty: "label", 
+				data: [
+					{ label: "France", sales: 500, profit: 50, region: "EU" },
+					{ label: "Germany", sales: 450, profit: 48, region: "EU" },
+					{ label: "UK", sales: 700, profit: 60, region: "EU" },
+					{ label: "USA", sales: 2000, profit: 250, region: "America" },
+					{ label: "Canada", sales: 600, profit: 30, region: "America" },
+					{ label: "Brazil", sales: 450, profit: 30, region: "America" },
+					{ label: "China", sales: 500, profit: 40, region: "Asia" },
+					{ label: "Japan", sales: 900, profit: 100, region: "Asia" }
+			]});
+			
+			var list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list.startup();
+			list.id = "list1"; // REMOVEME, for debug
+			// list.deliver();
+			var comboBox = new ComboBox({list: list}).placeAt("combo-single", "replace");
+			// default selectionMode: "single"
+			comboBox.startup();
+
+			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list.startup();
+			list.id = "list2"; // REMOVEME, for debug
+			comboBox = new ComboBox({list: list, selectionMode: "multiple"}).
+				placeAt("combo-multiple", "replace");
+			comboBox.startup();
+		});
+	</script>
+</head>
+<body>
+	<p>
+	This sample demonstrate how to populate the deliteful/ComboBox programmatically.
+	</p>
+	<p>
+	selectionMode: "single"
+	</p>
+	<span id="combo-single"></span>
+	<p>
+	selectionMode: "multiple"
+	</p>
+	blah blah <span id="combo-multiple"></span>
+</body>
+</html>
