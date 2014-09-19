@@ -9,8 +9,10 @@ define([
 	// "delite/Selection",
 	"./list/List",
 	"delite/handlebars!./ComboBox/ComboBox.html",
+	"requirejs-dplugins/i18n!./ComboBox/nls/ComboBox",
 	"delite/theme!./ComboBox/themes/{{theme}}/ComboBox.css"
-], function (dcl, domClass, register, FormWidget, HasDropDown, /*StoreMap, Selection,*/ List, template) {
+], function (dcl, domClass, register, FormWidget, HasDropDown,
+		/*StoreMap, Selection,*/ List, template, messages) {
 
 	/**
 	 * A form-aware and store-aware widget leveraging the native HTML5 `<select>`
@@ -127,6 +129,10 @@ define([
 		 * @default null
 		 */
 		list: null,
+
+		// The default text displayed in the input for a multiple choice
+		_multipleChoiceMsg: messages["multiple-choice"],
+		
 		/*
 		startup: function () {
 			
@@ -139,12 +145,14 @@ define([
 				sup.call(this);
 				console.log("ComboBox.buildRendering");
 				
+				/*
 				this.list = this.querySelector("d-list");
 				if (this.list) {
 					// Declarative case (list specified declaratively inside the declarative ComboBox)
 					console.log(" ==> ComboBox.buildRendering initializes this.list and this.dropDown");
 					this._initList();
 				}
+				*/
 			};
 		}),
 		
@@ -199,6 +207,13 @@ define([
 				// Programmatic case (list passed as ComboBox' ctor arg)
 				console.log("   ==> ComboBox.refreshRendering initializes this.list and this.dropDown");
 				this._initList();
+			} else if (!this.list) {
+				this.list = this.querySelector("d-list");
+				if (this.list) {
+					// Declarative case (list specified declaratively inside the declarative ComboBox)
+					console.log(" ==> ComboBox.buildRendering initializes this.list and this.dropDown");
+					this._initList();
+				}
 			}
 		},
 		
@@ -210,6 +225,7 @@ define([
 				// do not give focus to the popup, otherwise the user can't type in the input field
 				this.list.focusOnOpen = false;
 			}
+			// this.forceWidth = true; // TODO checkme
 			this.list.isAriaListbox = true;
 			/* // TODO comment
 			if (this.list.selectionMode === "none") {
@@ -219,11 +235,10 @@ define([
 			this.dropDown = this.list;
 				
 			// List already filled
-			var self = this;
-			var firstItemRenderer = self.list.getItemRendererByIndex(0);
+			var firstItemRenderer = this.list.getItemRendererByIndex(0);
 			console.log("firstItemRenderer: " + firstItemRenderer);
 			if (firstItemRenderer) {
-				self.input.value = firstItemRenderer.item[self.list.labelAttr];
+				this.input.value = firstItemRenderer.item[this.list.labelAttr];
 			} else {
 				// For future updates:
 				var initDone = false;
@@ -231,44 +246,73 @@ define([
 				this.list.on("query-success", function () {
 					console.log("=== ComboBox got query-success");
 					if (!initDone) {
-						var firstItemRenderer = self.list.getItemRendererByIndex(0);
+						var firstItemRenderer = this.list.getItemRendererByIndex(0);
 						console.log("now got firstItemRenderer: " + firstItemRenderer);
 						if (firstItemRenderer && !initDone) {
-							self.input.value = firstItemRenderer.item[self.list.labelAttr];
+							this.input.value = firstItemRenderer.item[this.list.labelAttr];
 						}
 						initDone = true;
 					}
-				});
+				}.bind(this));
 			}
 				
 			this.list.on("selection-change", function (evt) {
 				console.log("oldValue: " + evt.oldValue);
 				console.log("newValue: " + evt.newValue);
-				if (self.selectionMode === "single") {
-					var selectedItem = self.list.selectedItem;
-					if (selectedItem) {
-						self.input.value = selectedItem[self.list.labelAttr];
+				if (this.selectionMode === "single") {
+					var selectedItem = this.list.selectedItem;
+					console.log("selection-change, selectedItem: " + 
+						(selectedItem ? selectedItem.label : selectedItem));
+					this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+					this.closeDropDown(true/*refocus*/);
+				} else { // selectionMode "multiple"
+					var selectedItems = this.list.selectedItems;
+					var n = selectedItems ? selectedItems.length : 0;
+					console.log("selection mode is multiple, n: " + n);
+					if (n > 1) {
+						this.input.value = this._multipleChoiceMsg;
+					} else if (n === 1) {
+						var selectedItem = this.list.selectedItem;
+						this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+					} else { // no option selected
+						this.input.value = "";
 					}
-					self.closeDropDown();
 				}
-			});
+			}.bind(this));
 			
 			this.on("input", function () {
-				self.list.selectedItem = null;
-				var txt = self.input.value;
+				this.list.selectedItem = null;
+				var txt = this.input.value;
 				console.log("txt: " + txt);
-				self.list.query = function(obj) {
+				this.list.query = function(obj) {
 					// TODO: case-sensitiveness, startsWith/contains
 					return obj.label.indexOf(txt) === 0;
 				};
-			}, this.input);
+				console.log("on(input) calls openDropDown");
+				this.openDropDown(); // reopen if closed
+			}.bind(this), this.input);
 		},
 		
+		closeDropDown: dcl.superCall(function (sup) {
+			return function () {
+				console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+				// Reinit the query. Necessary such that after closing the dropdown
+				// in autocomplete mode with a text in the input field not matching
+				// any item, when the dropdown will be reopen it shows all items
+				// instead of being empty 
+				this.list.query = {};
+				sup.apply(this, arguments);
+			};
+		}),
+		
+		/*
 		_onBlur: dcl.superCall(function (sup) {
 			return function () {
+				alert("_onBlur");
 				// sup.apply(this, arguments);
 			};
 		}),
+		*/
 		
 		_onTouchNode: dcl.superCall(function (sup) {
 			return function (node, by) {
