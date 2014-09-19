@@ -1,7 +1,8 @@
 <template class="d-combobox" role="combobox">
-	<input class="d-combobox-input" data-attach-point="input,buttonNode,focusNode"
+	<input class="d-combobox-input"
+		data-attach-point="input,buttonNode,focusNode"
 		autocomplete="off"
 		type="{{this.autoComplete ? 'search' : 'text'}}"
 		incremental="{{this.incrementalEnabled}}"
-		readonly="{{this.selectionMode !== 'single'}}" name="{{name}}">
+		readonly="{{!this.autoComplete}}" name="{{name}}">
 </template>

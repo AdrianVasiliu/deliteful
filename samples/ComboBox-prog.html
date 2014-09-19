@@ -41,33 +41,50 @@
 			]});
 			
 			var list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list1 = list; // REMOVEME, for debug
 			list.startup();
 			list.id = "list1"; // REMOVEME, for debug
-			// list.deliver();
 			var comboBox = new ComboBox({list: list}).placeAt("combo-single", "replace");
+			combo1 = comboBox; // REMOVEME, for debug
+			// default selectionMode: "single"
+			comboBox.startup();
+			
+			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list2 = list; // REMOVEME, for debug
+			list.startup();
+			list.id = "list1"; // REMOVEME, for debug
+			comboBox = new ComboBox({autoComplete: true, list: list}).
+				placeAt("combo-single-autocomplete", "replace");
+			combo2 = comboBox; // REMOVEME, for debug
 			// default selectionMode: "single"
 			comboBox.startup();
 
 			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list3 = list; // REMOVEME, for debug
 			list.startup();
 			list.id = "list2"; // REMOVEME, for debug
 			comboBox = new ComboBox({list: list, selectionMode: "multiple"}).
 				placeAt("combo-multiple", "replace");
+			combo3 = comboBox; // REMOVEME, for debug
 			comboBox.startup();
 		});
 	</script>
 </head>
 <body>
 	<p>
-	This sample demonstrate how to populate the deliteful/ComboBox programmatically.
+	ComboBox <b>programmatically</b>.
 	</p>
 	<p>
-	selectionMode: "single"
+	selectionMode: "single", autoComplete: false
 	</p>
 	<span id="combo-single"></span>
 	<p>
+	selectionMode: "single", autoComplete: true
+	</p>
+	<span id="combo-single-autocomplete"></span>
+	<p>
 	selectionMode: "multiple"
 	</p>
-	blah blah <span id="combo-multiple"></span>
+	<span id="combo-multiple"></span>
 </body>
 </html>
