@@ -109,7 +109,7 @@ define(["dcl/dcl",
 				return this._visibleChild ? this._visibleChild.id : "";
 			},
 
-			startup: function () {
+			attachedCallback: function () {
 				var noTransition = {transition: "none"};
 				if (this._pendingChild) {
 					this.show(this._pendingChild, noTransition);

@@ -262,13 +262,14 @@ define([
 			delete this._keyNavCodes[keys.END];
 		},
 
-		startup: dcl.superCall(function (sup) {
+		attachedCallback: dcl.superCall(function (sup) {
 			// Starts the widget: parse the content of the widget node to clean it,
 			//	add items to the store if specified in markup.
 			//	Using superCall() rather than the default chaining so that the code runs
 			//	before StoreMap.startup()
 			return function () {
 				// search for custom elements to populate the store
+				console.log("startup, set busy true");
 				this._setBusy(true, true);
 				var children = Array.prototype.slice.call(this.children);
 				if (children.length) {
@@ -285,7 +286,7 @@ define([
 						}
 					}
 				}
-				this.on("query-error", function () { this._setBusy(false, true); }.bind(this));
+				this.on("query-error", function () { console.log("error, set busy false"); this._setBusy(false, true); }.bind(this));
 				if (sup) {
 					sup.call(this, arguments);
 				}
@@ -352,6 +353,7 @@ define([
 				|| (this._isCategorized()
 						&& ("categoryAttr" in props || "categoryFunc" in props || "categoryRenderer" in props))) {
 				if (this._dataLoaded) {
+					console.log("computeProperteis, data loaded is true => set busy true");
 					this._setBusy(true, true);
 
 					// trigger a reload of the list
@@ -898,6 +900,7 @@ define([
 		initItems: function (items) {
 			this._empty();
 			this._renderNewItems(items, false);
+			console.log("initItems, after render, set busy false");
 			this._setBusy(false, true);
 			this._dataLoaded = true;
 			this.emit("query-success", { renderItems: items, cancelable: false, bubbles: true });
