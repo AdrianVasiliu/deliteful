@@ -169,16 +169,16 @@ define([
 				// which are no longer selected in the native select.
 				for (i = 0; i < nSelectedItems; i++) {
 					selectedItem = selectedItems[i];
-					if (selectedOptions.indexOf(selectedItem.visualItem) === -1) {
-						this.selectFromEvent(event, selectedItem, selectedItem.visualItem, true);
+					if (selectedOptions.indexOf(selectedItem._visualItem) === -1) {
+						this.selectFromEvent(event, selectedItem, selectedItem._visualItem, true);
 					}
 				}
 				// Step 2. Search options newly selected in the native select which are not
 				// present in the current selection (widget.selectedItems).
 				for (i = 0; i < nSelectedOptions; i++) {
 					selectedOption = selectedOptions[i];
-					if (selectedItems.indexOf(selectedOption.renderItem) === - 1) {
-						this.selectFromEvent(event, selectedOption.renderItem, selectedOption, true);
+					if (selectedItems.indexOf(selectedOption._dataItem) === - 1) {
+						this.selectFromEvent(event, selectedOption._dataItem, selectedOption, true);
 					}
 				}
 				
@@ -212,8 +212,11 @@ define([
 					for (var i = 0; i < n; i++) {
 						renderItem = renderItems[i];
 						option = this.ownerDocument.createElement("option");
-						option.renderItem = renderItem;
-						renderItem.visualItem = option;
+						// to allow retrieving the data item from the option element
+						option._dataItem = renderItem._dataItem;
+						// to allow retrieving the option element from widget's selectedItems
+						// (which are data items, not render items).
+						option._dataItem._visualItem = option;
 						
 						// According to http://www.w3.org/TR/html5/forms.html#the-option-element, we 
 						// could use equivalently the label or the text IDL attribute of the option element.
@@ -228,7 +231,7 @@ define([
 						if (renderItem.value !== undefined) { // optional
 							option.setAttribute("value", renderItem.value);
 						}
-						if (this.isSelected(renderItem)) { // delite/Selection's API
+						if (this.isSelected(renderItem._dataItem)) { // delite/Selection's API
 							option.setAttribute("selected", "true");
 						}
 						if (renderItem.disabled !== undefined &&
@@ -247,7 +250,7 @@ define([
 						// the delite/Selection's selectedItem property with the currently
 						// selected option of the native select.
 						this.selectedItem =
-							this.valueNode.options[this.valueNode.selectedIndex].renderItem;
+							this.valueNode.options[this.valueNode.selectedIndex]._dataItem;
 					} // else for the native multi-select: it does not have any
 					// option selected by default.
 					
@@ -257,9 +260,19 @@ define([
 			}
 		},
 		
-		getIdentity: function (renderItem) {
+		itemToRenderItem: dcl.superCall(function (sup) {
+			// Override of delite/StoreMap's method
+			return function (dataItem) {
+				var renderItem = sup.call(this, dataItem);
+				// Keep the mapping from render item to data item
+				renderItem._dataItem = dataItem;
+				return renderItem;
+			};
+		}),
+		
+		getIdentity: function (dataItem) {
 			// Override of delite/Selection's method
-			return renderItem.id;
+			return this.store.getIdentity(dataItem);
 		},
 		
 		updateRenderers: function () {
@@ -290,3 +303,4 @@ define([
 		})
 	});
 });
+
