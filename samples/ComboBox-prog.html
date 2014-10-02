@@ -53,8 +53,8 @@
 			list2 = list; // REMOVEME, for debug
 			list.startup();
 			list.id = "list1"; // REMOVEME, for debug
-			comboBox = new ComboBox({autoComplete: true, list: list}).
-				placeAt("combo-single-autocomplete", "replace");
+			comboBox = new ComboBox({autoFilter: true, list: list}).
+				placeAt("combo-single-autoFilter", "replace");
 			combo2 = comboBox; // REMOVEME, for debug
 			// default selectionMode: "single"
 			comboBox.startup();
@@ -67,6 +67,28 @@
 				placeAt("combo-multiple", "replace");
 			combo3 = comboBox; // REMOVEME, for debug
 			comboBox.startup();
+			
+			// Now the same but disabled
+			// 
+			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list.startup();
+			var comboBox = new ComboBox({list: list, disabled: true}).
+				placeAt("combo-single-disabled", "replace");
+			// default selectionMode: "single"
+			comboBox.startup();
+			
+			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list.startup();
+			comboBox = new ComboBox({autoFilter: true, list: list, disabled: true}).
+				placeAt("combo-single-autoFilter-disabled", "replace");
+			// default selectionMode: "single"
+			comboBox.startup();
+
+			list = new List({store: dataStore, righttextAttr: "sales", categoryAttr: "region"});
+			list.startup();
+			comboBox = new ComboBox({list: list, selectionMode: "multiple", disabled: true}).
+				placeAt("combo-multiple-disabled", "replace");
+			comboBox.startup();
 		});
 	</script>
 </head>
@@ -75,16 +97,29 @@
 	ComboBox <b>programmatically</b>.
 	</p>
 	<p>
-	selectionMode: "single", autoComplete: false
+	selectionMode: "single", autoFilter: false
 	</p>
 	<span id="combo-single"></span>
 	<p>
-	selectionMode: "single", autoComplete: true
+	selectionMode: "single", autoFilter: true
 	</p>
-	<span id="combo-single-autocomplete"></span>
+	<span id="combo-single-autoFilter"></span>
 	<p>
 	selectionMode: "multiple"
 	</p>
 	<span id="combo-multiple"></span>
+	
+	<p>
+	selectionMode: "single", autoFilter: false, disabled
+	</p>
+	<span id="combo-single-disabled"></span>
+	<p>
+	selectionMode: "single", autoFilter: true, disabled
+	</p>
+	<span id="combo-single-autoFilter-disabled"></span>
+	<p>
+	selectionMode: "multiple", disabled
+	</p>
+	<span id="combo-multiple-disabled"></span>
 </body>
 </html>

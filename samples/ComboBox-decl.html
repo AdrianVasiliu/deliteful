@@ -32,9 +32,9 @@
 	ComboBox in <b>markup</b>.
 	</p>
 	<p>
-	selectionMode: "single", autoComplete: false
+	selectionMode: "single", autoFilter: false
 	</p>
-	<d-combobox selectionMode="single" autoComplete="false" id="combo1">
+	<d-combobox selectionMode="single" autoFilter="false" id="combo1">
 		<d-list righttextAttr="sales">
 			<!-- d-list-store is the name of the tag currently used by List but the
 			plan is that there will be a generic way to declaratively create store
@@ -52,9 +52,9 @@
 		</d-list>
 	</d-combobox>
 	<p>
-	selectionMode: "single", autoComplete: true
+	selectionMode: "single", autoFilter: true
 	</p>
-	<d-combobox selectionMode="single" autoComplete="true" id="combo2">
+	<d-combobox selectionMode="single" autoFilter="true" id="combo2">
 		<d-list righttextAttr="sales">
 			<!-- d-list-store is the name of the tag currently used by List but the
 			plan is that there will be a generic way to declaratively create store
@@ -74,7 +74,68 @@
 	<p>
 	selectionMode: "multiple"
 	</p>
-	<d-combobox selectionMode="multiple" autoComplete="false" id="combo3">
+	<d-combobox selectionMode="multiple" autoFilter="false" id="combo3">
+		<d-list righttextAttr="sales">
+			<!-- d-list-store is the name of the tag currently used by List but the
+			plan is that there will be a generic way to declaratively create store
+			content -->
+			<d-list-store>
+				{ "label": "France", "sales": 500, "profit": 50, "region": "EU" },
+				{ "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
+				{ "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
+				{ "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
+				{ "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
+				{ "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
+				{ "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
+				{ "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
+			</d-list-store>
+		</d-list>
+	</d-combobox>
+	
+	<p>
+	selectionMode: "single", autoFilter: false, disabled
+	</p>
+	<d-combobox selectionMode="single" autoFilter="false" id="combo1-disabled" disabled>
+		<d-list righttextAttr="sales">
+			<!-- d-list-store is the name of the tag currently used by List but the
+			plan is that there will be a generic way to declaratively create store
+			content -->
+			<d-list-store>
+				{ "label": "France", "sales": 500, "profit": 50, "region": "EU" },
+				{ "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
+				{ "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
+				{ "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
+				{ "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
+				{ "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
+				{ "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
+				{ "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
+			</d-list-store>
+		</d-list>
+	</d-combobox>
+	<p>
+	selectionMode: "single", autoFilter: true, disabled
+	</p>
+	<d-combobox selectionMode="single" autoFilter="true" id="combo2-disabled" disabled>
+		<d-list righttextAttr="sales">
+			<!-- d-list-store is the name of the tag currently used by List but the
+			plan is that there will be a generic way to declaratively create store
+			content -->
+			<d-list-store>
+				{ "label": "France", "sales": 500, "profit": 50, "region": "EU" },
+				{ "label": "Germany", "sales": 450, "profit": 48, "region": "EU" },
+				{ "label": "UK", "sales": 700, "profit": 60, "region": "EU" },
+				{ "label": "USA", "sales": 2000, "profit": 250, "region": "America" },
+				{ "label": "Canada", "sales": 600, "profit": 30, "region": "America" },
+				{ "label": "Brazil", "sales": 450, "profit": 30, "region": "America" },
+				{ "label": "China", "sales": 500, "profit": 40, "region": "Asia" },
+				{ "label": "Japan", "sales": 900, "profit": 100, "region": "Asia" }
+			</d-list-store>
+		</d-list>
+	</d-combobox>
+	<p>
+	selectionMode: "multiple" disabled
+	</p>
+	<d-combobox selectionMode="multiple" autoFilter="false" id="combo3-disabled" disabled>
 		<d-list righttextAttr="sales">
 			<!-- d-list-store is the name of the tag currently used by List but the
 			plan is that there will be a generic way to declaratively create store
