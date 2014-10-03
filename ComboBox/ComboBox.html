@@ -1,8 +1,9 @@
 <template class="d-combobox" role="combobox">
 	<input class="d-combobox-input"
-		data-attach-point="input,buttonNode,focusNode"
+		attach-point="input,buttonNode,focusNode"
 		autocomplete="off"
-		type="{{this.autoComplete ? 'search' : 'text'}}"
+		aria-autocomplete="list"
+		type="{{this.autoFilter ? 'search' : 'text'}}"
 		incremental="{{this.incrementalEnabled}}"
-		readonly="{{!this.autoComplete}}" name="{{name}}">
+		readonly="{{!this.autoFilter}}" name="{{name}}">
 </template>
