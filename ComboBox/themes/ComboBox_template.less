@@ -1,0 +1,33 @@
+.d-combobox {
+	display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+	.d-combobox-styles;
+}
+
+.d-combobox::after {
+	content: "\25BC";
+	padding:0;
+	position: relative;
+	pointer-events: none; /* allow clicks to pass through */
+	.d-combobox-arrow-styles; 
+}
+
+.d-combobox-input {
+	height: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+	.d-combobox-input-styles;
+	
+	&[disabled],
+	fieldset[disabled] & {
+		opacity: 0.5;
+	}
+}
+
+.d-combobox .d-combobox-list-hidden {
+	display: none;
+}
