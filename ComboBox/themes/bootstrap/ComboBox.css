@@ -39,3 +39,9 @@ fieldset[disabled] .d-combobox-input {
   outline-offset: -2px;
   /* defined in delite/themes/bootstrap/mixins.less */
 }
+.d-combobox-list .d-active-descendant {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+  /* defined in delite/themes/bootstrap/mixins.less */
+}

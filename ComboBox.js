@@ -5,12 +5,13 @@ define([
 	"delite/register",
 	"delite/FormWidget",
 	"delite/HasDropDown",
+	"delite/keys",
 	"./list/List",
 	"delite/handlebars!./ComboBox/ComboBox.html",
 	"requirejs-dplugins/i18n!./ComboBox/nls/ComboBox",
 	"delite/theme!./ComboBox/themes/{{theme}}/ComboBox.css"
 ], function (dcl, domClass, register, FormWidget, HasDropDown,
-		List, template, messages) {
+		keys, List, template, messages) {
 
 	/**
 	 * A form-aware and store-aware widget leveraging the deliteful/list/List widget
@@ -112,10 +113,22 @@ define([
 					this._initList(false/*addToDom*/);
 				}
 			}
+			
+			// To provide graphic feedback for focus, react to focus/blur events
+			// on the underlying native select. The CSS class is used instead
+			// of the focus pseudo-class because the browsers give the focus
+			// to the underlying select, not to the widget.
+			this.on("focus", function (evt) {
+				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
+			}.bind(this), this);
+			this.on("blur", function (evt) {
+				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
+			}.bind(this), this);
 		},
 		
 		_initList: function (addToDom) {
 			// TODO temp debug
+			/*
 			this.on("keydown", function (evt) {
 				console.log("keydown on this, this.id: " + this.id);
 				console.log("   target: " + evt.target);
@@ -124,6 +137,12 @@ define([
 				console.log("keydown on this.input, this.id: " + this.id);
 				console.log("   target: " + evt.target);
 			}, this.input);
+			*/
+			
+			// Class added on the list such that ComboBox' theme can have a specific
+			// CSS selector for elements inside the List when used as dropdown in
+			// the combo. 
+			domClass.add(this.list, "d-combobox-list");
 			
 			// The drop-down is hidden initially
 			domClass.add(this.list, "d-combobox-list-hidden");
@@ -135,7 +154,8 @@ define([
 			this.list.style.height = "inherit";
 			if (this.autoFilter) {
 				// do not give focus to the popup, otherwise the user can't type in the input field
-				this.list.focusOnOpen = false;
+				// TODO CHECKME this.list.focusOnOpen = false;
+				// this.list.focusOnOpen = false;
 			}
 			// this.forceWidth = true; // TODO checkme
 			
@@ -143,17 +163,27 @@ define([
 			// aria spec of role=combobox
 			this.list.isAriaListbox = true;
 			
+			this.list.focusDescendants = false;
+			
 			this.list.selectionMode = this.selectionMode === "single" ?
 				"radio" : "multiple";
-						
+				
 			this.dropDown = this.list; // delite/HasDropDown's property
 			
-			this.dropDown.handleKey = function (evt) {
-				console.log("got key evt: " + evt);
-				console.log(evt);
-				this.list._keynavKeyDownHandler(evt);
-			}.bind(this);
-				
+			this.list.on("keynav-child-navigated", function(evt) {
+				console.log("ComboBox got keynav-child-navigated:");
+				console.log("oldValue: " + (evt.oldValue ? evt.oldValue.id : "null"));
+				console.log("newValue: " + (evt.newValue ? evt.newValue.id : "null"));
+				if (evt.newValue) {
+					this.list.selectFromEvent(evt, evt.newValue, evt.newValue, true);
+					console.log("new selectedItems: ");
+					console.log(this.list.selectedItems);
+					this.input.setAttribute("aria-activedescendant", evt.newValue.id);
+				} else {
+					this.input.removeAttribute("aria-activedescendant");
+				}
+			}.bind(this));
+			
 			// List already filled
 			var firstItemRenderer = this.list.getItemRendererByIndex(0);
 			console.log("firstItemRenderer: " + firstItemRenderer);
@@ -175,15 +205,33 @@ define([
 					}
 				}.bind(this));
 			}
-				
+			
+			var actionHandler = function(event, list) {
+				var renderer = list.getEnclosingRenderer(event.target);
+				console.log("ComboBox actionHandler on event.target: " + event.target);
+				console.log("  renderer: " + renderer);
+				if (renderer) {
+					this.closeDropDown(true/*refocus*/);
+				}
+			}.bind(this);
+			
+			this.list.on("click", function (event) {
+				actionHandler(event, this.list);
+			}.bind(this));
+			this.list.on("keydown", function (event) {
+				if (event.keyCode === keys.ENTER) {
+					actionHandler(event, this.list);
+				}
+			}.bind(this));
+							
 			this.list.on("selection-change", function () {
+				console.log("selection-change");
 				var selectedItem;
 				if (this.selectionMode === "single") {
 					selectedItem = this.list.selectedItem;
 					console.log("selection-change, selectedItem: " +
 						(selectedItem ? selectedItem.label : selectedItem));
 					this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
-					this.closeDropDown(true/*refocus*/);
 				} else { // selectionMode "multiple"
 					var selectedItems = this.list.selectedItems;
 					var n = selectedItems ? selectedItems.length : 0;
