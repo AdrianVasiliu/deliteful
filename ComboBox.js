@@ -5,14 +5,16 @@ define([
 	"delite/register",
 	"delite/FormWidget",
 	"delite/HasDropDown",
+	"delite/Viewport",
 	"delite/keys",
 	"./list/List",
+	"./LinearLayout",
+	"./Button",
 	"delite/handlebars!./ComboBox/ComboBox.html",
 	"requirejs-dplugins/i18n!./ComboBox/nls/ComboBox",
 	"delite/theme!./ComboBox/themes/{{theme}}/ComboBox.css"
 ], function (dcl, domClass, register, FormWidget, HasDropDown,
-		keys, List, template, messages) {
-
+		Viewport, keys, List, LinearLayout, Button, template, messages) {
 	/**
 	 * A form-aware and store-aware widget leveraging the deliteful/list/List widget
 	 * for rendering the options.
@@ -124,6 +126,12 @@ define([
 			this.on("blur", function (evt) {
 				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
 			}.bind(this), this);
+			
+			// TODO: this brutal way is only temporary 
+			var box = Viewport.getEffectiveBox(this.ownerDocument);
+			if (true || box.w < 300 || box.h < 300) {
+				this.dropDownPosition = ["center"];
+			}
 		},
 		
 		_initList: function (addToDom) {
@@ -158,6 +166,8 @@ define([
 				// this.list.focusOnOpen = false;
 			}
 			// this.forceWidth = true; // TODO checkme
+			this.autoWidth = false; // TODO checkme 
+			this.forceWidth = false; // TODO checkme
 			
 			// The role=listbox is required for the list part of a combobox by the
 			// aria spec of role=combobox
@@ -167,20 +177,25 @@ define([
 			
 			this.list.selectionMode = this.selectionMode === "single" ?
 				"radio" : "multiple";
-				
-			this.dropDown = this.list; // delite/HasDropDown's property
+			
+			var dropDown = this._createCenteredDropDownForMultiChoice(this.list);
+			dropDown.style.width = "100%";
+			this.dropDown = dropDown; // delite/HasDropDown's property
+			// this.dropDown = this.list; // delite/HasDropDown's property
 			
 			this.list.on("keynav-child-navigated", function(evt) {
 				console.log("ComboBox got keynav-child-navigated:");
 				console.log("oldValue: " + (evt.oldValue ? evt.oldValue.id : "null"));
 				console.log("newValue: " + (evt.newValue ? evt.newValue.id : "null"));
+				var input = this._popupInput || this.input;
 				if (evt.newValue) {
 					this.list.selectFromEvent(evt, evt.newValue, evt.newValue, true);
 					console.log("new selectedItems: ");
 					console.log(this.list.selectedItems);
-					this.input.setAttribute("aria-activedescendant", evt.newValue.id);
+					if (this._popupInput) {}
+					input.setAttribute("aria-activedescendant", evt.newValue.id);
 				} else {
-					this.input.removeAttribute("aria-activedescendant");
+					input.removeAttribute("aria-activedescendant");
 				}
 			}.bind(this));
 			
@@ -198,8 +213,9 @@ define([
 					if (!initDone) {
 						var firstItemRenderer = this.list.getItemRendererByIndex(0);
 						console.log("now got firstItemRenderer: " + firstItemRenderer);
+						var input = this._popupInput || this.input;
 						if (firstItemRenderer && !initDone) {
-							this.input.value = firstItemRenderer.item[this.list.labelAttr];
+							input.value = firstItemRenderer.item[this.list.labelAttr];
 						}
 						initDone = true;
 					}
@@ -227,22 +243,23 @@ define([
 			this.list.on("selection-change", function () {
 				console.log("selection-change");
 				var selectedItem;
+				var input = this._popupInput || this.input;
 				if (this.selectionMode === "single") {
 					selectedItem = this.list.selectedItem;
 					console.log("selection-change, selectedItem: " +
 						(selectedItem ? selectedItem.label : selectedItem));
-					this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+					input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
 				} else { // selectionMode "multiple"
 					var selectedItems = this.list.selectedItems;
 					var n = selectedItems ? selectedItems.length : 0;
 					console.log("selection mode is multiple, n: " + n);
 					if (n > 1) {
-						this.input.value = this._multipleChoiceMsg;
+						input.value = this._multipleChoiceMsg;
 					} else if (n === 1) {
 						selectedItem = this.list.selectedItem;
-						this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+						input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
 					} else { // no option selected
-						this.input.value = "";
+						input.value = "";
 					}
 				}
 			}.bind(this));
@@ -250,14 +267,62 @@ define([
 			this.on("input", function () {
 				this.list.selectedItem = null;
 				var txt = this.input.value;
-				console.log("txt: " + txt);
 				this.list.query = function (obj) {
-					// TODO: case-sensitiveness, startsWith/contains
-					return obj.label.indexOf(txt) === 0;
-				};
+					return this._filterFunction(obj.label, txt);
+				}.bind(this);
 				console.log("on(input) calls openDropDown");
 				this.openDropDown(); // reopen if closed
 			}.bind(this), this.input);
+		},
+		
+		_createCenteredDropDownForMultiChoice: function (list) {
+			var topLayout = new LinearLayout({width:"100%"});
+			
+			this._popupInput = document.createElement("input");
+			domClass.add(this._popupInput, "d-combobox-popup-input");
+			this._popupInput.setAttribute("role", "combobox");
+			this._popupInput.setAttribute("autocomplete", "off");
+			this._popupInput.setAttribute("aria-autocomplete", "list");
+			this._popupInput.setAttribute("type", "search");
+			this.on("input", function () {
+				this.list.selectedItem = null;
+				var txt = this._popupInput.value;
+				this.list.query = function (obj) {
+					return this._filterFunction(obj.label, txt);
+				}.bind(this);
+				console.log("on(input) calls openDropDown");
+				this.openDropDown(); // reopen if closed
+			}.bind(this), this._popupInput);
+			topLayout.addChild(this._popupInput);
+			
+			domClass.add(list, "fill");
+			topLayout.addChild(list);
+			var bottomLayout = new LinearLayout({vertical: false, width: "100%"});
+			var cancelButton = new Button({label: "Cancel"});
+			var okButton = new Button({label: "OK"});
+			okButton.onclick = function () {
+				this.closeDropDown();
+			}.bind(this);
+			cancelButton.onclick = function () {
+				this.closeDropDown(); // TODO: restore initial value 
+			}.bind(this);
+			bottomLayout.addChild(cancelButton);
+			var centralSpan = document.createElement("span");
+			domClass.add(centralSpan, "fill");
+			bottomLayout.addChild(centralSpan);
+			bottomLayout.addChild(okButton);
+			okButton.startup();
+			bottomLayout.startup();
+			topLayout.addChild(bottomLayout);
+			topLayout.startup();
+			return topLayout;
+		},
+		
+		_filterFunction: function (itemLabel, queryTxt) {
+			// TODO: case-sensitiveness, startsWith/contains, fancy locals support...
+			queryTxt = queryTxt.toLocaleUpperCase();
+			itemLabel = itemLabel.toLocaleUpperCase();
+			return itemLabel.indexOf(queryTxt) === 0;
 		},
 		
 		closeDropDown: dcl.superCall(function (sup) {
