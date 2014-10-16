@@ -2,10 +2,10 @@
 define([
 	"dcl/dcl",
 	"dojo/dom-class", // TODO: replace (when replacement confirmed)
+	"dojo/has", // has("touch")
 	"delite/register",
 	"delite/FormWidget",
 	"delite/HasDropDown",
-	"delite/Viewport",
 	"delite/keys",
 	"./list/List",
 	"./LinearLayout",
@@ -13,8 +13,8 @@ define([
 	"delite/handlebars!./ComboBox/ComboBox.html",
 	"requirejs-dplugins/i18n!./ComboBox/nls/ComboBox",
 	"delite/theme!./ComboBox/themes/{{theme}}/ComboBox.css"
-], function (dcl, domClass, register, FormWidget, HasDropDown,
-		Viewport, keys, List, LinearLayout, Button, template, messages) {
+], function (dcl, domClass, has, register, FormWidget, HasDropDown,
+		keys, List, LinearLayout, Button, template, messages) {
 	/**
 	 * A form-aware and store-aware widget leveraging the deliteful/list/List widget
 	 * for rendering the options.
@@ -86,7 +86,19 @@ define([
 		 * @default null
 		 */
 		list: null,
+		
+		// Flag used for biding the readonly attribute of the input element in the template
+		_inputReadOnly: true,
+		
+		/**
+		 * The value of the placeholder attribute of the input element used
+		 * for filtering the list of options. The default value is provided by the
+		 * "search-placeholder" key of the message bundle.
+		 * @default "Search"
+		 */
+		searchPlaceHolder: messages["search-placeholder"],
 
+		// TODO: worth a property?
 		// The default text displayed in the input for a multiple choice
 		_multipleChoiceMsg: messages["multiple-choice"],
 		
@@ -94,7 +106,7 @@ define([
 			console.log("ComboBox.refreshRendering oldValues.list: " +
 				oldValues.list + " this.list: " + this.list);
 			if ("list" in oldValues) {
-				// Programmatic case (list passed as ComboBox' ctor arg or set after the
+				// Programmatic case (List passed as ComboBox' ctor arg or set after the
 				// initialization phase)
 				console.log("   ==> ComboBox.refreshRendering initializes this.list and this.dropDown");
 				this._initList(true/*addToDom*/);
@@ -107,12 +119,34 @@ define([
 		},
 		
 		attachedCallback: function () {
+			console.log("ComboBox.attachedCallback");
 			// Declarative case (list specified declaratively inside the declarative ComboBox)
 			if (!this.list) {
 				this.list = this.querySelector("d-list");
+				//
 				if (this.list) {
-					console.log(" ==> ComboBox.buildRendering initializes this.list and this.dropDown");
-					this._initList(false/*addToDom*/);
+					console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+					console.log("this.list: " + this.list);
+					this._initList(false);
+				}
+				//
+				if (false && this.list) {
+					if (!this.list.attached) {
+						console.log("ComboBox.attachedCallback: list not yet attached, add listener");
+						this.list.addEventListener("customelement-attached", 
+							this._attachedlistener = function () {
+								console.log("listener calls _initList");
+								console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+								console.log("this.list: " + this.list);
+								this._initList(false/*addToDom*/);
+								this.list.removeEventListener("customelement-attached", this._attachedlistener);
+						}.bind(this));
+					} else {
+						console.log("ComboBox.attachedCallback: list already attached");
+						console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+						console.log("this.list: " + this.list);
+						this._initList(false/*addToDom*/);
+					} 
 				}
 			}
 			
@@ -126,13 +160,54 @@ define([
 			this.on("blur", function (evt) {
 				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
 			}.bind(this), this);
-			
-			// TODO: this brutal way is only temporary 
-			var box = Viewport.getEffectiveBox(this.ownerDocument);
-			if (true || box.w < 300 || box.h < 300) {
-				this.dropDownPosition = ["center"];
-			}
 		},
+		
+		startuppppppp: dcl.superCall(function (sup) {
+			return function () {
+				sup.apply(this, arguments);
+			console.log("ComboBox.attachedCallback");
+			// Declarative case (list specified declaratively inside the declarative ComboBox)
+			if (!this.list) {
+				this.list = this.querySelector("d-list");
+				/*
+				if (this.list) {
+					console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+					console.log("this.list: " + this.list);
+					this._initList(false);
+				}
+				*/
+				if (this.list) {
+					if (false && !this.list.attached) {
+						console.log("ComboBox.attachedCallback: list not yet attached, add listener");
+						this.list.addEventListener("customelement-attached", 
+							this._attachedlistener = function () {
+								console.log("listener calls _initList");
+								console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+								console.log("this.list: " + this.list);
+								this._initList(false/*addToDom*/);
+								this.list.removeEventListener("customelement-attached", this._attachedlistener);
+						}.bind(this));
+					} else {
+						console.log("ComboBox.attachedCallback: list already attached");
+						console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
+						console.log("this.list: " + this.list);
+						this._initList(false/*addToDom*/);
+					} 
+				}
+			}
+			
+			// To provide graphic feedback for focus, react to focus/blur events
+			// on the underlying native select. The CSS class is used instead
+			// of the focus pseudo-class because the browsers give the focus
+			// to the underlying select, not to the widget.
+			this.on("focus", function (evt) {
+				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
+			}.bind(this), this);
+			this.on("blur", function (evt) {
+				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
+			}.bind(this), this);
+			};
+		}),
 		
 		_initList: function (addToDom) {
 			// TODO temp debug
@@ -166,8 +241,8 @@ define([
 				// this.list.focusOnOpen = false;
 			}
 			// this.forceWidth = true; // TODO checkme
-			this.autoWidth = false; // TODO checkme 
-			this.forceWidth = false; // TODO checkme
+			// this.autoWidth = false; // TODO checkme 
+			// this.forceWidth = false; // TODO checkme
 			
 			// The role=listbox is required for the list part of a combobox by the
 			// aria spec of role=combobox
@@ -178,11 +253,10 @@ define([
 			this.list.selectionMode = this.selectionMode === "single" ?
 				"radio" : "multiple";
 			
-			var dropDown = this._createCenteredDropDownForMultiChoice(this.list);
-			dropDown.style.width = "100%";
+			var dropDown = this._createDropDown(this.list);
 			this.dropDown = dropDown; // delite/HasDropDown's property
-			// this.dropDown = this.list; // delite/HasDropDown's property
 			
+			/* TODO: for later
 			this.list.on("keynav-child-navigated", function(evt) {
 				console.log("ComboBox got keynav-child-navigated:");
 				console.log("oldValue: " + (evt.oldValue ? evt.oldValue.id : "null"));
@@ -198,8 +272,10 @@ define([
 					input.removeAttribute("aria-activedescendant");
 				}
 			}.bind(this));
+			*/
 			
 			// List already filled
+			console.log("ComboBox._initList with list: " + this.list);
 			var firstItemRenderer = this.list.getItemRendererByIndex(0);
 			console.log("firstItemRenderer: " + firstItemRenderer);
 			if (firstItemRenderer) {
@@ -224,45 +300,52 @@ define([
 			
 			var actionHandler = function(event, list) {
 				var renderer = list.getEnclosingRenderer(event.target);
-				console.log("ComboBox actionHandler on event.target: " + event.target);
-				console.log("  renderer: " + renderer);
-				if (renderer) {
-					this.closeDropDown(true/*refocus*/);
+				if (renderer && !list._isCategoryRenderer(renderer)) {
+					// var label = renderer.item[this.list.labelAttr];
+					// __item is set by StoreMap.itemToRenderItem()
+					var label = renderer.item.__item[this.list.labelAttr];
+					this.input.value = label;
+					// TODO: temporary till solving issues with introducing valueAttr
+					this.value = label;
+					if (this.selectionMode !== "multiple") {
+						this.closeDropDown(true/*refocus*/);
+					}
 				}
 			}.bind(this);
 			
-			this.list.on("click", function (event) {
-				actionHandler(event, this.list);
-			}.bind(this));
-			this.list.on("keydown", function (event) {
-				if (event.keyCode === keys.ENTER) {
+			if (this.selectionMode !== "multiple") {
+				this.list.on("click", function (event) {
 					actionHandler(event, this.list);
-				}
-			}.bind(this));
-							
-			this.list.on("selection-change", function () {
-				console.log("selection-change");
-				var selectedItem;
-				var input = this._popupInput || this.input;
-				if (this.selectionMode === "single") {
-					selectedItem = this.list.selectedItem;
-					console.log("selection-change, selectedItem: " +
-						(selectedItem ? selectedItem.label : selectedItem));
-					input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
-				} else { // selectionMode "multiple"
-					var selectedItems = this.list.selectedItems;
-					var n = selectedItems ? selectedItems.length : 0;
-					console.log("selection mode is multiple, n: " + n);
-					if (n > 1) {
-						input.value = this._multipleChoiceMsg;
-					} else if (n === 1) {
+				}.bind(this));
+				this.list.on("keydown", function (event) {
+					if (event.keyCode === keys.ENTER) {
+						actionHandler(event, this.list);
+					}
+				}.bind(this));
+			}
+			
+			if (this.selectionMode === "multiple" &&
+				!this.useCenteredDropDown()) {
+				this.list.on("selection-change", function () {
+					var selectedItem;
+					var input = this._popupInput || this.input;
+					/* if (this.selectionMode === "single") {
 						selectedItem = this.list.selectedItem;
 						input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
-					} else { // no option selected
-						input.value = "";
-					}
-				}
-			}.bind(this));
+					} else { // selectionMode "multiple" */
+						var selectedItems = this.list.selectedItems;
+						var n = selectedItems ? selectedItems.length : 0;
+						if (n > 1) {
+							input.value = this._multipleChoiceMsg;
+						} else if (n === 1) {
+							selectedItem = this.list.selectedItem;
+							input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+						} else { // no option selected
+							input.value = "";
+						}
+					// }
+				}.bind(this));
+			}
 			
 			this.on("input", function () {
 				this.list.selectedItem = null;
@@ -275,15 +358,120 @@ define([
 			}.bind(this), this.input);
 		},
 		
-		_createCenteredDropDownForMultiChoice: function (list) {
-			var topLayout = new LinearLayout({width:"100%"});
+		/**
+		 * Returns `true` if the dropdown should be centered, and returns
+		 * `false` if it should be displayed below/above the widget.
+		 * The default implementation returns `true` on touch-enabled devices.
+		 * @protected
+		 */
+		useCenteredDropDown: function () {
+			// TODO: take final decision about the choice criteria
+			return has("touch"); 
+		},
+		
+		_createDropDown: function (list) {
+			var centeredDropDown = this.useCenteredDropDown();
 			
-			this._popupInput = document.createElement("input");
-			domClass.add(this._popupInput, "d-combobox-popup-input");
-			this._popupInput.setAttribute("role", "combobox");
-			this._popupInput.setAttribute("autocomplete", "off");
-			this._popupInput.setAttribute("aria-autocomplete", "list");
-			this._popupInput.setAttribute("type", "search");
+			// The ComboBox template binds the readonly attribute of the input
+			// element on this property 
+			this._inputReadOnly = centeredDropDown || this.selectionMode === "multiple";
+			
+			var dropDown = centeredDropDown ?
+				this._createCenteredDropDown(this.list) :
+				this._createNormalDropDown(this.list);
+			
+			this.forceWidth = true; // has no effect in "center" mode
+			// dropDown.style.width = "200px"; // "100%";
+			// dropDown.style.height = "300px"; // "100%";
+			// dropDown.style.width = "100%";
+			// dropDown.style.height = "100%";
+			this.dropDownPosition = centeredDropDown ?
+				["center"] :
+				["below", "above"]; // this is the default
+			// TODO: depending on the final criteria, if it can't dynamically change
+			// during widget's life time, we could set dropDownPosition statically.
+			// But since the user can override the protected "useCenteredDropDown()",
+			// we need to cope with a dynamic change.
+			
+			return dropDown;
+		},
+		
+		_createNormalDropDown: function (list) {
+			// TODO: does it help to embed List in LinearLayout?
+			// Depends on outcome of https://github.com/ibm-js/deliteful/pull/341
+			var topLayout = new LinearLayout();
+			// topLayout.style.width = "auto";
+			// topLayout.style.height = "auto";
+			
+			domClass.add(list, "fill");
+			topLayout.addChild(list);
+			topLayout.startup();
+			return topLayout;
+		},
+		
+		_createCenteredDropDown: function (list) {
+			var topLayout = new LinearLayout();
+			// topLayout.style.width = "200px"; // "100%";
+			// topLayout.style.height = "300px"; // "100%";
+			
+			if (this.autoFilter && this.selectionMode !== "multiple") {
+				this._popupInput = this._createPopupInput();
+				topLayout.addChild(this._popupInput);
+			}
+			
+			domClass.add(list, "fill");
+			topLayout.addChild(list);
+			
+			// Just as Android for the native select element, only use ok/cancel
+			// buttons in the multichoice case.
+			if (this.selectionMode == "multiple") {
+				var bottomLayout = new LinearLayout({vertical: false, width: "100%"});
+				var cancelButton = new Button({label: "Cancel"});
+				var okButton = new Button({label: "OK"});
+				okButton.onclick = function () {
+					var selectedItems = this.list.selectedItems;
+					var n = selectedItems ? selectedItems.length : 0;
+					console.log("selection mode is multiple, n: " + n);
+					if (n > 1) {
+						this.input.value = this._multipleChoiceMsg;
+					} else if (n === 1) {
+						selectedItem = this.list.selectedItem;
+						this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
+					} else { // no option selected
+						this.input.value = "";
+					}
+					this.closeDropDown();
+				}.bind(this);
+				cancelButton.onclick = function () {
+					this.list.selectedItems = this._selectedItems;
+					this.closeDropDown(); 
+				}.bind(this);
+				bottomLayout.addChild(cancelButton);
+				var centralSpan = document.createElement("span");
+				domClass.add(centralSpan, "fill");
+				bottomLayout.addChild(centralSpan);
+				bottomLayout.addChild(okButton);
+				okButton.startup();
+				bottomLayout.startup();
+				topLayout.addChild(bottomLayout);
+			}
+			topLayout.startup();
+			return topLayout;
+		},
+		
+		/**
+		 * Creates the input element inside the popup.
+		 * Only used for single-choice mode.
+		 * @private
+		 */
+		_createPopupInput: function () {
+			var popupInput = document.createElement("input");
+			domClass.add(popupInput, "d-combobox-popup-input");
+			popupInput.setAttribute("role", "combobox");
+			popupInput.setAttribute("autocomplete", "off");
+			popupInput.setAttribute("aria-autocomplete", "list");
+			popupInput.setAttribute("type", "search");
+			popupInput.setAttribute("placeholder", this.searchPlaceHolder);
 			this.on("input", function () {
 				this.list.selectedItem = null;
 				var txt = this._popupInput.value;
@@ -292,30 +480,9 @@ define([
 				}.bind(this);
 				console.log("on(input) calls openDropDown");
 				this.openDropDown(); // reopen if closed
-			}.bind(this), this._popupInput);
-			topLayout.addChild(this._popupInput);
+			}.bind(this), popupInput);
 			
-			domClass.add(list, "fill");
-			topLayout.addChild(list);
-			var bottomLayout = new LinearLayout({vertical: false, width: "100%"});
-			var cancelButton = new Button({label: "Cancel"});
-			var okButton = new Button({label: "OK"});
-			okButton.onclick = function () {
-				this.closeDropDown();
-			}.bind(this);
-			cancelButton.onclick = function () {
-				this.closeDropDown(); // TODO: restore initial value 
-			}.bind(this);
-			bottomLayout.addChild(cancelButton);
-			var centralSpan = document.createElement("span");
-			domClass.add(centralSpan, "fill");
-			bottomLayout.addChild(centralSpan);
-			bottomLayout.addChild(okButton);
-			okButton.startup();
-			bottomLayout.startup();
-			topLayout.addChild(bottomLayout);
-			topLayout.startup();
-			return topLayout;
+			return popupInput;
 		},
 		
 		_filterFunction: function (itemLabel, queryTxt) {
@@ -324,6 +491,15 @@ define([
 			itemLabel = itemLabel.toLocaleUpperCase();
 			return itemLabel.indexOf(queryTxt) === 0;
 		},
+		
+		openDropDown: dcl.superCall(function (sup) {
+			return function () {
+				// Store the value, to be able to restore on cancel. 
+				// (Could spare it if no cancel button, though.)
+				this._selectedItems = this.list.selectedItems;
+				sup.apply(this, arguments);
+			};
+		}),
 		
 		closeDropDown: dcl.superCall(function (sup) {
 			return function () {
