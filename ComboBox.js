@@ -123,30 +123,23 @@ define([
 			// Declarative case (list specified declaratively inside the declarative ComboBox)
 			if (!this.list) {
 				this.list = this.querySelector("d-list");
-				//
 				if (this.list) {
-					console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
-					console.log("this.list: " + this.list);
-					this._initList(false);
-				}
-				//
-				if (false && this.list) {
 					if (!this.list.attached) {
 						console.log("ComboBox.attachedCallback: list not yet attached, add listener");
-						this.list.addEventListener("customelement-attached", 
+						this.list.addEventListener("customelement-attached",
 							this._attachedlistener = function () {
 								console.log("listener calls _initList");
 								console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
 								console.log("this.list: " + this.list);
 								this._initList(false/*addToDom*/);
 								this.list.removeEventListener("customelement-attached", this._attachedlistener);
-						}.bind(this));
+							}.bind(this));
 					} else {
 						console.log("ComboBox.attachedCallback: list already attached");
 						console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
 						console.log("this.list: " + this.list);
 						this._initList(false/*addToDom*/);
-					} 
+					}
 				}
 			}
 			
@@ -161,53 +154,6 @@ define([
 				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
 			}.bind(this), this);
 		},
-		
-		startuppppppp: dcl.superCall(function (sup) {
-			return function () {
-				sup.apply(this, arguments);
-			console.log("ComboBox.attachedCallback");
-			// Declarative case (list specified declaratively inside the declarative ComboBox)
-			if (!this.list) {
-				this.list = this.querySelector("d-list");
-				/*
-				if (this.list) {
-					console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
-					console.log("this.list: " + this.list);
-					this._initList(false);
-				}
-				*/
-				if (this.list) {
-					if (false && !this.list.attached) {
-						console.log("ComboBox.attachedCallback: list not yet attached, add listener");
-						this.list.addEventListener("customelement-attached", 
-							this._attachedlistener = function () {
-								console.log("listener calls _initList");
-								console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
-								console.log("this.list: " + this.list);
-								this._initList(false/*addToDom*/);
-								this.list.removeEventListener("customelement-attached", this._attachedlistener);
-						}.bind(this));
-					} else {
-						console.log("ComboBox.attachedCallback: list already attached");
-						console.log(" ==> ComboBox.attachedCallback initializes this.list and this.dropDown");
-						console.log("this.list: " + this.list);
-						this._initList(false/*addToDom*/);
-					} 
-				}
-			}
-			
-			// To provide graphic feedback for focus, react to focus/blur events
-			// on the underlying native select. The CSS class is used instead
-			// of the focus pseudo-class because the browsers give the focus
-			// to the underlying select, not to the widget.
-			this.on("focus", function (evt) {
-				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
-			}.bind(this), this);
-			this.on("blur", function (evt) {
-				domClass.toggle(this, "d-combobox-focus", evt.type === "focus");
-			}.bind(this), this);
-			};
-		}),
 		
 		_initList: function (addToDom) {
 			// TODO temp debug
@@ -298,12 +244,11 @@ define([
 				}.bind(this));
 			}
 			
-			var actionHandler = function(event, list) {
+			var actionHandler = function (event, list) {
 				var renderer = list.getEnclosingRenderer(event.target);
 				if (renderer && !list._isCategoryRenderer(renderer)) {
-					// var label = renderer.item[this.list.labelAttr];
 					// __item is set by StoreMap.itemToRenderItem()
-					var label = renderer.item.__item[this.list.labelAttr];
+					var label = renderer.item.__item[list.labelAttr];
 					this.input.value = label;
 					// TODO: temporary till solving issues with introducing valueAttr
 					this.value = label;
@@ -329,21 +274,16 @@ define([
 				this.list.on("selection-change", function () {
 					var selectedItem;
 					var input = this._popupInput || this.input;
-					/* if (this.selectionMode === "single") {
+					var selectedItems = this.list.selectedItems;
+					var n = selectedItems ? selectedItems.length : 0;
+					if (n > 1) {
+						input.value = this._multipleChoiceMsg;
+					} else if (n === 1) {
 						selectedItem = this.list.selectedItem;
 						input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
-					} else { // selectionMode "multiple" */
-						var selectedItems = this.list.selectedItems;
-						var n = selectedItems ? selectedItems.length : 0;
-						if (n > 1) {
-							input.value = this._multipleChoiceMsg;
-						} else if (n === 1) {
-							selectedItem = this.list.selectedItem;
-							input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
-						} else { // no option selected
-							input.value = "";
-						}
-					// }
+					} else { // no option selected
+						input.value = "";
+					}
 				}.bind(this));
 			}
 			
@@ -351,7 +291,7 @@ define([
 				this.list.selectedItem = null;
 				var txt = this.input.value;
 				this.list.query = function (obj) {
-					return this._filterFunction(obj.label, txt);
+					return this._filterFunction(obj[this.list.labelAttr], txt);
 				}.bind(this);
 				console.log("on(input) calls openDropDown");
 				this.openDropDown(); // reopen if closed
@@ -366,7 +306,7 @@ define([
 		 */
 		useCenteredDropDown: function () {
 			// TODO: take final decision about the choice criteria
-			return has("touch"); 
+			return has("touch");
 		},
 		
 		_createDropDown: function (list) {
@@ -377,8 +317,8 @@ define([
 			this._inputReadOnly = centeredDropDown || this.selectionMode === "multiple";
 			
 			var dropDown = centeredDropDown ?
-				this._createCenteredDropDown(this.list) :
-				this._createNormalDropDown(this.list);
+				this._createCenteredDropDown(list) :
+				this._createNormalDropDown(list);
 			
 			this.forceWidth = true; // has no effect in "center" mode
 			// dropDown.style.width = "200px"; // "100%";
@@ -424,7 +364,7 @@ define([
 			
 			// Just as Android for the native select element, only use ok/cancel
 			// buttons in the multichoice case.
-			if (this.selectionMode == "multiple") {
+			if (this.selectionMode === "multiple") {
 				var bottomLayout = new LinearLayout({vertical: false, width: "100%"});
 				var cancelButton = new Button({label: "Cancel"});
 				var okButton = new Button({label: "OK"});
@@ -435,7 +375,7 @@ define([
 					if (n > 1) {
 						this.input.value = this._multipleChoiceMsg;
 					} else if (n === 1) {
-						selectedItem = this.list.selectedItem;
+						var selectedItem = this.list.selectedItem;
 						this.input.value = selectedItem ? selectedItem[this.list.labelAttr] : "";
 					} else { // no option selected
 						this.input.value = "";
@@ -444,7 +384,7 @@ define([
 				}.bind(this);
 				cancelButton.onclick = function () {
 					this.list.selectedItems = this._selectedItems;
-					this.closeDropDown(); 
+					this.closeDropDown();
 				}.bind(this);
 				bottomLayout.addChild(cancelButton);
 				var centralSpan = document.createElement("span");
@@ -475,8 +415,10 @@ define([
 			this.on("input", function () {
 				this.list.selectedItem = null;
 				var txt = this._popupInput.value;
+				// TODO: what about server-side filtering of the store? (needs at least a
+				// mechanism allowing the user to implement it). 
 				this.list.query = function (obj) {
-					return this._filterFunction(obj.label, txt);
+					return this._filterFunction(obj[this.list.labelAttr], txt);
 				}.bind(this);
 				console.log("on(input) calls openDropDown");
 				this.openDropDown(); // reopen if closed
