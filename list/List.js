@@ -232,14 +232,15 @@ define([
 
 		render: function () {
 			// Initialize the widget node and set the container and scrollable node.
-			this.scrollableNode = this.ownerDocument.createElement("div");
-			// Firefox focus the scrollable node when clicking it or tabing: in this case, the list
+			//this.scrollableNode = this.ownerDocument.createElement("div");
+			this.scrollableNode = this;
+				// Firefox focus the scrollable node when clicking it or tabing: in this case, the list
 			// widget needs to be focused instead.
 			this.own(on(this.scrollableNode, "focus", function () {
 				this.focus();
 			}.bind(this)));
-			this.scrollableNode.className = "d-list-container";
-			this.appendChild(this.scrollableNode);
+			//this.scrollableNode.className = "d-list-container";
+			//this.appendChild(this.scrollableNode);
 			// Aria attributes
 			this.setAttribute("role", this.isAriaListbox ? "listbox" : "grid");
 			// Might be overriden at the cell (renderer renderNode) level when developing custom renderers
@@ -552,7 +553,8 @@ define([
 		_showLoadingPanel: function () {
 			if (!this._loadingPanel) {
 				this._loadingPanel = new LoadingPanel({message: this.loadingMessage});
-				this.insertBefore(this._loadingPanel, this.scrollableNode);
+				//this.insertBefore(this._loadingPanel, this.scrollableNode);
+				this.appendChild(this._loadingPanel);
 				this._loadingPanel.startup();
 			}
 		},
