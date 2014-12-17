@@ -1,6 +1,6 @@
 // Listing of all the deliteful functional tests
 define([
-	"./StarRating",
+	/*"./StarRating",
 	"./ScrollableContainer",
 	"./list/all",
 	"./Toaster",
@@ -9,7 +9,7 @@ define([
 	"./SidePane",
 	"./Checkbox",
 	"./Switch",
-	"./Button",
-	"./Combobox",
-	"./SwapView"
+	"./Button",*/
+	"./Combobox"/*,
+	"./SwapView"*/
 ]);

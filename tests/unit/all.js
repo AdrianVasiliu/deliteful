@@ -1,6 +1,6 @@
 //Listing of all the deliteful unit tests
 define([
-	"./Checkbox",
+	/*"./Checkbox",
 	"./LinearLayout-direction",
 	"./LinearLayout-horizontal",
 	"./LinearLayout-horizontal-3width",
@@ -28,6 +28,6 @@ define([
 	"./ResponsiveColumns",
 	"./ViewStack",
 	"./SwapView",
-	"./ViewIndicator",
+	"./ViewIndicator",*/
 	"./Combobox"
 ]);
