@@ -509,6 +509,9 @@ define([
 		_createCenteredDropDown: function (list) {
 			var dropDown = new ComboPopup({combobox: this});
 			list.placeAt(dropDown.listNode, "replace");
+			// startup() is not called by Widget.placeAt because the parent of
+			// dropDown is not yet started, but startup() will be called by delite/popup
+			// when opening the dropdown.
 			$(list).addClass("fill");
 			this._prepareInput(dropDown.inputNode);
 			return dropDown;

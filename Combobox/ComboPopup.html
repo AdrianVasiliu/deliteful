@@ -8,7 +8,7 @@
 			aria-autocomplete="list" type="search"
 			placeholder="{{combobox.searchPlaceHolder}}"
 			on-input="{{combobox.handleInput}}">
-		<div attach-point="listNode" class="fill"></div>
+		<div attach-point="listNode"></div>
 		<d-linear-layout d-hidden="{{combobox.selectionMode !== 'multiple'}}"
 			vertical="false">
 			<button is="d-button" class="fill" label="{{combobox.cancelMsg}}" on-click="{{cancelHandler}}"></button>
