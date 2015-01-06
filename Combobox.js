@@ -9,13 +9,12 @@ define([
 	"delite/HasDropDown",
 	"delite/keys",
 	"./list/List",
-	"./LinearLayout",
-	"./Button",
+	"./Combobox/_ComboPopup",
 	"delite/handlebars!./Combobox/Combobox.html",
 	"requirejs-dplugins/i18n!./Combobox/nls/Combobox",
 	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css"
 ], function (dcl, $, Filter, has, register, FormValueWidget, HasDropDown,
-		keys, List, LinearLayout, Button, template, messages) {
+		keys, List, ComboPopup, template, messages) {
 	/**
 	 * A form-aware and store-aware widget leveraging the `deliteful/list/List`
 	 * widget for rendering the options.
@@ -198,11 +197,23 @@ define([
 		 */
 		multipleChoiceNoSelectionMsg: messages["multiple-choice-no-selection"],
 		
-		// TODO: worth exposing public properties?
-		// The default label of the OK button
-		_okButtonLabel: messages["ok-button-label"],
-		// The default label of the Cancel button
-		_cancelButtonLabel: messages["cancel-button-label"],
+		/**
+		 * The text displayed in the OK button when the combobox popup contains such a button.
+		 * The default value is provided by the "ok-button-label" key of
+		 * the message bundle.
+		 * @member {string}
+		 * @default "OK"
+		 */
+		okMsg: messages["ok-button-label"],
+		
+		/**
+		 * The text displayed in the Cancel button when the combobox popup contains such a button.
+		 * The default value is provided by the "cancel-button-label" key of
+		 * the message bundle.
+		 * @member {string}
+		 * @default "Cancel"
+		 */
+		cancelMsg: messages["cancel-button-label"],
 		
 		preRender: function () {
 			this.list = new List();
@@ -496,38 +507,11 @@ define([
 		},
 		
 		_createCenteredDropDown: function (list) {
-			// TODO: move to separate widget.
-			var topLayout = new LinearLayout();
-
-			if (this.autoFilter && this.selectionMode !== "multiple") {
-				this._popupInput = this._createPopupInput();
-				topLayout.addChild(this._popupInput);
-			}
-			
+			var dropDown = new ComboPopup({combobox: this});
+			list.placeAt(dropDown.listNode, "replace");
 			$(list).addClass("fill");
-			topLayout.addChild(list);
-
-			// Just as Android for the native select element, only use ok/cancel
-			// buttons in the multichoice case.
-			if (this.selectionMode === "multiple") {
-				var bottomLayout = new LinearLayout({vertical: false, width: "100%"});
-				var cancelButton = new Button({label: this._cancelButtonLabel});
-				var okButton = new Button({label: this._okButtonLabel});
-				okButton.onclick = function () {
-					this._validateMultiple(this.inputNode);
-					this.closeDropDown();
-				}.bind(this);
-				cancelButton.onclick = function () {
-					this.list.selectedItems = this._selectedItems;
-					this.closeDropDown();
-				}.bind(this);
-				$(cancelButton).addClass("fill");
-				$(okButton).addClass("fill");
-				bottomLayout.addChild(cancelButton);
-				bottomLayout.addChild(okButton);
-				topLayout.addChild(bottomLayout);
-			}
-			return topLayout;
+			this._prepareInput(dropDown.inputNode);
+			return dropDown;
 		},
 		
 		/**
