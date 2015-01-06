@@ -1,4 +1,4 @@
-/** @module deliteful/ComboPopup */
+/** @module deliteful/_ComboPopup */
 define([
 	"delite/register",
 	"delite/Widget",
@@ -7,20 +7,20 @@ define([
 	/**
 	 * A widget used as centered popup by deliteful/Combobox.
 	 * 
-	 * @class module:deliteful/Combobox/ComboPopup
+	 * @class module:deliteful/Combobox/_ComboPopup
 	 * @augments module:delite/Widget
 	 * @private
 	 */
 	return register("d-combo-popup", [HTMLElement, Widget],
-		/** @lends module:deliteful/ComboPopup# */ {
+		/** @lends module:deliteful/_ComboPopup# */ {
 		
 		baseClass: "d-combo-popup",
 		
 		template: template,
 		
 		/**
-		 * The instance of `deliteful/Combobox` for which ComboPopup is used.
-		 * @member {boolean} module:deliteful/Combobox/ComboPopup#combobox
+		 * The instance of `deliteful/Combobox` for which _ComboPopup is used.
+		 * @member {boolean} module:deliteful/Combobox/_ComboPopup#combobox
 		 * @default null
 		 */
 		combobox: null,
