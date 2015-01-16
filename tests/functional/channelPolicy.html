@@ -17,7 +17,7 @@
 			}, ["deliteful/channelPolicy", "requirejs-domready/domReady!"], 
 			function (has) {
 				function update() {
-					["d-phone-channel", "d-tablet-channel", "d-desktop-channel"].forEach(
+					["phone-channel", "tablet-channel", "desktop-channel"].forEach(
 						function (key) {
 							var res = has(key);
 							tbody.innerHTML += "<tr><td>has(\"" + key + "\")</td><td>" +

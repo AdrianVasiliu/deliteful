@@ -28,25 +28,27 @@ define(["dcl/dcl", "requirejs-dplugins/has", "module", "decor/Evented"],
 	// dcl.mix(channelPolicy, has);
 	
 	var breakpoints =
-		// module.config().breakpoints || "{'small': '480px', 'medium': '1024px', 'large': ''}";
-		JSON.stringify(module.config().breakpoints) || "{'small': '480px', 'medium': '1024px', 'large': ''}";
+		// TODO: rename to phone / tablet / desktop ? Impact on ResponsiveColumns.
+		// TODO: remove large/desktop? Impact on ResponsiveColumns.
+		module.config().breakpoints || {small: "480px", medium: "1024px", large: ""};
+		// JSON.stringify(module.config().breakpoints) || "{'small': '480px', 'medium': '1024px', 'large': ''}";
 			
-	has.add("d-breakpoints", breakpoints);
+	has.add("channel-breakpoints", breakpoints);
 		
-	var parsedBreakpoints = JSON.parse(breakpoints.replace(/\'/g, "\""));
+	// var parsedBreakpoints = JSON.parse(breakpoints.replace(/\'/g, "\""));
 		
-	var smallMaxSize = parsedBreakpoints.small;
-	var mediumMaxSize = parsedBreakpoints.medium;
+	var smallMaxSize = breakpoints.small;
+	var mediumMaxSize = breakpoints.medium;
 	var mqSmall = window.matchMedia( "(min-width: " + smallMaxSize + ")" );
 	var mqMedium = window.matchMedia( "(min-width: " + mediumMaxSize + ")" );
 		
-	has.add("d-phone-channel", function () {
+	has.add("phone-channel", function () {
 		return !mqSmall.matches && !mqMedium.matches;
 	});
-	has.add("d-tablet-channel", function () {
+	has.add("tablet-channel", function () {
 		return mqSmall.matches && !mqMedium.matches;
 	});
-	has.add("d-desktop-channel", function () {
+	has.add("desktop-channel", function () {
 		return mqSmall.matches && mqMedium.matches;
 	});
 		

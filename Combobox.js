@@ -9,7 +9,7 @@ define([
 	"delite/HasDropDown",
 	"delite/keys",
 	"./list/List",
-	"./channelPolicy!d-phone-channel?./Combobox/ComboPopup",
+	"./channelPolicy!phone-channel?./Combobox/ComboPopup",
 	"delite/handlebars!./Combobox/Combobox.html",
 	"requirejs-dplugins/i18n!./Combobox/nls/Combobox",
 	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css",
