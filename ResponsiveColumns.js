@@ -42,7 +42,7 @@ define([
 			 * @member {string}
 			 * @default "{'small': '480px', 'medium': '1024px', large: ''}"
 			 */
-			breakpoints: has("d-breakpoints"), // "{'small': '480px', 'medium': '1024px', 'large': ''}",
+			breakpoints: JSON.stringify(has("channel-breakpoints")), // "{'small': '480px', 'medium': '1024px', 'large': ''}",
 
 			/**
 			 * The current screen class currently applied by the container.
