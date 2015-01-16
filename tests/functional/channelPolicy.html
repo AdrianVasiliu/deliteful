@@ -17,7 +17,7 @@
 			}, ["deliteful/channelPolicy", "requirejs-domready/domReady!"], 
 			function (has) {
 				function update() {
-					["d-policy-small", "d-policy-medium", "d-policy-large"].forEach(
+					["d-phone-channel", "d-tablet-channel", "d-desktop-channel"].forEach(
 						function (key) {
 							var res = has(key);
 							tbody.innerHTML += "<tr><td>has(\"" + key + "\")</td><td>" +

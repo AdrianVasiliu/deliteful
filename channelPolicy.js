@@ -39,14 +39,14 @@ define(["dcl/dcl", "requirejs-dplugins/has", "module", "decor/Evented"],
 	var mediumMaxSize = parsedBreakpoints.medium;
 	var mqSmall = window.matchMedia( "(min-width: " + smallMaxSize + ")" );
 	var mqMedium = window.matchMedia( "(min-width: " + mediumMaxSize + ")" );
-		
-	has.add("d-policy-small", function () {
+		"d-phone-channel", "d-tablet-channel", "d-desktop-channel"
+	has.add("d-phone-channel", function () {
 		return !mqSmall.matches && !mqMedium.matches;
 	});
-	has.add("d-policy-medium", function () {
+	has.add("d-tablet-channel", function () {
 		return mqSmall.matches && !mqMedium.matches;
 	});
-	has.add("d-policy-large", function () {
+	has.add("d-desktop-channel", function () {
 		return mqSmall.matches && mqMedium.matches;
 	});
 		
@@ -56,15 +56,5 @@ define(["dcl/dcl", "requirejs-dplugins/has", "module", "decor/Evented"],
 	mqSmall.addListener(changeHandler);
 	mqMedium.addListener(changeHandler);
 		
-	/*
-	channelPolicy.add("toto", "tata");
-	console.log("channelPolicy small: " + channelPolicy("d-policy-small"));
-	console.log("channelPolicy toto: " + channelPolicy("toto"));
-	console.log("has small: " + has("d-policy-small"));
-	
-	console.log("channelPolicy add: " + channelPolicy.add);
-	console.log("has add: " + has.add);
-	*/
-	
 	return has; // channelPolicy;
 });

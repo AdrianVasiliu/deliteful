@@ -9,17 +9,13 @@ define([
 	"delite/HasDropDown",
 	"delite/keys",
 	"./list/List",
-	"./channelPolicy",
-	"./channelPolicy!d-policy-small?./Combobox/ComboPopup",
+	"./channelPolicy!d-phone-channel?./Combobox/ComboPopup",
 	"delite/handlebars!./Combobox/Combobox.html",
 	"requirejs-dplugins/i18n!./Combobox/nls/Combobox",
 	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css",
 	"ecma402/locales"
 ], function (dcl, $, Filter, has, register, FormValueWidget, HasDropDown,
-		keys, List, channelPolicy, ComboPopup, template, messages) {
-		console.log("has('d-policy-small'): " + channelPolicy("d-policy-small"));
-		console.log("has('d-policy-medium'): " + channelPolicy("d-policy-medium"));
-		console.log("has('d-policy-large'): " + channelPolicy("d-policy-large"));
+		keys, List, ComboPopup, template, messages) {
 	/**
 	 * A form-aware and store-aware widget leveraging the `deliteful/list/List`
 	 * widget for rendering the options.
