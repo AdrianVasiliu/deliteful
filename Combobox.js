@@ -9,12 +9,17 @@ define([
 	"delite/HasDropDown",
 	"delite/keys",
 	"./list/List",
-	"./Combobox/ComboPopup",
+	"./channelPolicy",
+	"./channelPolicy!d-policy-small?./Combobox/ComboPopup",
 	"delite/handlebars!./Combobox/Combobox.html",
 	"requirejs-dplugins/i18n!./Combobox/nls/Combobox",
-	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css"
+	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css",
+	"ecma402/locales"
 ], function (dcl, $, Filter, has, register, FormValueWidget, HasDropDown,
-		keys, List, ComboPopup, template, messages) {
+		keys, List, channelPolicy, ComboPopup, template, messages) {
+		console.log("has('d-policy-small'): " + channelPolicy("d-policy-small"));
+		console.log("has('d-policy-medium'): " + channelPolicy("d-policy-medium"));
+		console.log("has('d-policy-large'): " + channelPolicy("d-policy-large"));
 	/**
 	 * A form-aware and store-aware widget leveraging the `deliteful/list/List`
 	 * widget for rendering the options.
@@ -85,7 +90,7 @@ define([
 	 */
 	return register("d-combobox", [HTMLElement, HasDropDown, FormValueWidget],
 		/** @lends module:deliteful/Combobox# */ {
-		
+			
 		// TODO: handle the situation the list has a null/undefined store.
 		// Would be nice to have a global policy for all subclasses of
 		// delite/Store (in terms of error feedback).
@@ -494,7 +499,7 @@ define([
 			// its return value.
 			this._updateInputReadOnly();
 			
-			var centeredDropDown = this.useCenteredDropDown();
+			var centeredDropDown = ComboPopup !== undefined; // this.useCenteredDropDown();
 			var dropDown = centeredDropDown ?
 				this.createCenteredDropDown() :
 				this.createAboveBelowDropDown();

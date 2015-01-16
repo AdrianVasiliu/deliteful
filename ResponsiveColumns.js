@@ -3,8 +3,9 @@ define([
 	"requirejs-dplugins/jquery!attributes/classes",
 	"delite/register",
 	"delite/DisplayContainer",
+	"./channelPolicy",
 	"delite/theme!./ResponsiveColumns/themes/{{theme}}/ResponsiveColumns.css"
-], function ($, register, DisplayContainer) {
+], function ($, register, DisplayContainer, has) {
 	/**
 	 * A container that lays out its children according to the screen width. This widget relies on CSS media queries
 	 * (http://www.w3.org/TR/css3-mediaqueries). You can define any number of screen classes by setting the breakpoints
@@ -41,7 +42,7 @@ define([
 			 * @member {string}
 			 * @default "{'small': '480px', 'medium': '1024px', large: ''}"
 			 */
-			breakpoints: "{'small': '480px', 'medium': '1024px', 'large': ''}",
+			breakpoints: has("d-breakpoints"), // "{'small': '480px', 'medium': '1024px', 'large': ''}",
 
 			/**
 			 * The current screen class currently applied by the container.
