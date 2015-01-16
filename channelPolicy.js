@@ -39,7 +39,7 @@ define(["dcl/dcl", "requirejs-dplugins/has", "module", "decor/Evented"],
 	var mediumMaxSize = parsedBreakpoints.medium;
 	var mqSmall = window.matchMedia( "(min-width: " + smallMaxSize + ")" );
 	var mqMedium = window.matchMedia( "(min-width: " + mediumMaxSize + ")" );
-		"d-phone-channel", "d-tablet-channel", "d-desktop-channel"
+		
 	has.add("d-phone-channel", function () {
 		return !mqSmall.matches && !mqMedium.matches;
 	});
