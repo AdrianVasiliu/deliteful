@@ -41,7 +41,8 @@ define([
 	 * using the flags of `deliteful/channelPolicy`, the widget displays the popup
 	 * containing the options in a different manner: either in a popup below or above the
 	 * root node (in `tablet-channel` and `desktop-channel` policies), or in a panel
-	 * centered on the screen (in `tablet-channel` policy).
+	 * centered on the screen, filled with an instance of `deliteful/Combobox/ComboPopup`
+	 * (in `tablet-channel` policy).
 	 * 
 	 * If the widget is used in an HTML form, the submitted value is the one
 	 * of the `value` property. By default, the `label` field of list render items
@@ -486,14 +487,13 @@ define([
 		/**
 		 * Returns `true` if the dropdown should be centered, and returns
 		 * `false` if it should be displayed below/above the widget.
-		 * The default implementation returns `true` when running on
-		 * iOS or Android, and returns `false` otherwise.
+		 * The default implementation returns `true` when `deliteful/channelPolicy`
+		 * specifies `tablet-policy` or `desktop-policy`, and returns `false`
+		 * otherwise.
 		 * @protected
 		 */
 		useCenteredDropDown: function () {
-			// TODO: the decision about the choice criteria may be
-			// revisited (phone vs tablets?).
-			return has("ios") || has("android");
+			return !!ComboPopup;
 		},
 		
 		_createDropDown: function () {
@@ -501,7 +501,7 @@ define([
 			// its return value.
 			this._updateInputReadOnly();
 			
-			var centeredDropDown = ComboPopup !== undefined; // this.useCenteredDropDown();
+			var centeredDropDown = this.useCenteredDropDown();
 			var dropDown = centeredDropDown ?
 				this.createCenteredDropDown() :
 				this.createAboveBelowDropDown();
