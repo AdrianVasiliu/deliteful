@@ -17,7 +17,7 @@ define([
 ], function (dcl, $, Filter, has, register, FormValueWidget, HasDropDown,
 		keys, List, ComboPopup, template, messages) {
 	/**
-	 * A form-aware and store-aware widget leveraging the `deliteful/list/List`
+	 * A form-aware and store-aware multichannel widget leveraging the `deliteful/list/List`
 	 * widget for rendering the options.
 	 * 
 	 * The corresponding custom tag is `<d-combobox>`.
@@ -36,6 +36,12 @@ define([
 	 * case-insensitive, and an item is shown if its label contains the entered
 	 * string. The default filtering policy can be customized thanks to the 
 	 * `filterMode` and `ignoreCase` properties.
+	 * 
+	 * The widget is multichannel. Depending on the required channel, which is determined
+	 * using the flags of `deliteful/channelPolicy`, the widget displays the popup
+	 * containing the options in a different manner: either in a popup below or above the
+	 * root node (in `tablet-channel` and `desktop-channel` policies), or in a panel
+	 * centered on the screen (in `tablet-channel` policy).
 	 * 
 	 * If the widget is used in an HTML form, the submitted value is the one
 	 * of the `value` property. By default, the `label` field of list render items
