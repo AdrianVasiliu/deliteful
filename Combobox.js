@@ -37,7 +37,7 @@ define([
 	 * string. The default filtering policy can be customized thanks to the 
 	 * `filterMode` and `ignoreCase` properties.
 	 * 
-	 * The widget is multichannel responsive. Depending on the required channel, which
+	 * The widget provides multichannel rendering. Depending on the required channel, which
 	 * is determined by the value of the channel flags of `deliteful/features`, the
 	 * widget displays the popup containing the options in a different manner:
 	 * * if `has("desktop-like-channel")` is `true`: in a popup below or above the root node.

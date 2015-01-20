@@ -13,7 +13,7 @@ Main features:
 * Allows to benefit from the customization mechanism of the list item rendering.
 * Provides single and multiple selection modes.
 * Provides optional interactive filtering of list of options (single selection mode only). 
-* Multichannel responsive rendering.
+* Multichannel rendering.
 
 *Example of deliteful/Combobox (single choice mode, on desktop browser):*
 
@@ -153,14 +153,14 @@ List's documentation.
 
 ### Multichannel responsivness
 
-The Combobox widget is multichannel responsive: the popup is displayed on
+The widget provides multichannel rendering: the popup is displayed on
 large screens (desktop-like) below/above the main element, while on small and medium
 screens (phone-like and tablet-like), to optimize the usage of the available space,
 the popup is displayed in a centered overlay (an instance of `deliteful/Combobox/ComboPopup` 
 is used in this case).
 
 The channel is controlled by the value of the `has()` channel flags set by
-`deliteful/features` using CSS media queries.
+`deliteful/features` using CSS media queries depending on the screen size.
 See the [`deliteful/features`](/deliteful/docs/master/features.md) documentation
 for information about how to configure the channel and about how to customize
 the values of the screen size breakpoints used by the media queries.
