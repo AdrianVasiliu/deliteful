@@ -37,31 +37,17 @@ define([
 	 * string. The default filtering policy can be customized thanks to the 
 	 * `filterMode` and `ignoreCase` properties.
 	 * 
-	 * The widget is multichannel. Depending on the required channel, which is determined by
-	 * the value of the channel flags of `deliteful/features`, the widget displays the
-	 * popup containing the options in a different manner:
+	 * The widget is multichannel responsive. Depending on the required channel, which
+	 * is determined by the value of the channel flags of `deliteful/features`, the
+	 * widget displays the popup containing the options in a different manner:
 	 * * if `has("desktop-like-channel")` is `true`: in a popup below or above the root node.
 	 * * otherwise (that is for `"phone-like-channel"` and `"tablet-like-channel"`): in an
 	 * overlay centered on the screen, filled with an instance of `deliteful/Combobox/ComboPopup`.
 	 * 
-	 * The channel can be configured statically using `require.config()`, for instance:
-	 * 
-	 * ```html
-	 * <script>
-	 *   // configuring RequireJS
-	 *   require.config({
-	 *     ...
-	 *     config: {
-	 *       "requirejs-dplugins/has": {
-	 *         "phone-like-channel": false,
-	 *         "tablet-like-channel: true,
-	 *         "desktop-like-channel: true,
-	 *       }
-	 *     }
-	 *   });
-	 * </script>
-	 * ```
- 	 * Note that only one channel flag should be set to `true`.
+	 * The channel flags are set by `deliteful/features` using CSS media queries depending on
+	 * the screen size. See the `deliteful/features` documentation for information about the
+	 * channel flags and about how to configure them statically and how to customize the values
+	 * of the screen size breakpoints used by the media queries.
 	 * 
 	 * If the widget is used in an HTML form, the submitted value is the one
 	 * of the `value` property. By default, the `label` field of list render items

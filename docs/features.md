@@ -98,8 +98,8 @@ The channel flags can be configured statically using `require.config()`, for ins
     config: {
       "requirejs-dplugins/has": {
         "phone-like-channel": false,
-        "tablet-like-channel: true,
-        "desktop-like-channel: true,
+        "tablet-like-channel": true,
+        "desktop-like-channel": false,
       }
     }
   });
