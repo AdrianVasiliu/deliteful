@@ -81,7 +81,7 @@ for instance:
     config: {
       "requirejs-dplugins/has": {
         "breakpoint-small-screen": "280px",
-        "breakpoint-medium-screen: "724px"
+        "breakpoint-medium-screen": "724px"
       }
     }
   });

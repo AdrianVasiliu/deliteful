@@ -98,7 +98,7 @@ define([
 	 */
 	return register("d-combobox", [HTMLElement, HasDropDown, FormValueWidget],
 		/** @lends module:deliteful/Combobox# */ {
-			
+		
 		// TODO: handle the situation the list has a null/undefined store.
 		// Would be nice to have a global policy for all subclasses of
 		// delite/Store (in terms of error feedback).
@@ -492,8 +492,9 @@ define([
 		/**
 		 * Returns `true` if the dropdown should be centered, and returns
 		 * `false` if it should be displayed below/above the widget.
-		 * Returns `true` when `deliteful/features` specifies `tablet-policy` or
-		 * `desktop-policy`, and returns `false` otherwise.
+		 * Returns `true` when the module `deliteful/Combobox/ComboPopup` has
+		 * been loaded. Note that the module is loaded conditionally, depending
+		 * on the channel has() features set by `deliteful/features`.
 		 * @private
 		 */
 		_useCenteredDropDown: function () {
@@ -501,8 +502,6 @@ define([
 		},
 		
 		_createDropDown: function () {
-			// Update the readonly attribute in case _useCenteredDropDown() changed
-			// its return value.
 			this._updateInputReadOnly();
 			
 			var centeredDropDown = this._useCenteredDropDown();

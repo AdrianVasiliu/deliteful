@@ -156,7 +156,7 @@ List's documentation.
 The Combobox widget is multichannel responsive: the popup is displayed on
 large screens (desktop-like) below/above the main element, while on small and medium
 screens (phone-like and tablet-like), to optimize the usage of the available space,
-the popup is displayed in a centered overlay (an instance of deliteful/Combobox/ComboPopup 
+the popup is displayed in a centered overlay (an instance of `deliteful/Combobox/ComboPopup` 
 is used in this case).
 
 The channel is controlled by the value of the `has()` channel flags set by
