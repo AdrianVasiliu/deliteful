@@ -9,14 +9,11 @@ title: deliteful/Combobox
 [`deliteful/list/List`](/deliteful/docs/master/list/List.md) widget for
 displaying the list of options. 
 
-Characteristics:
-* It allows to benefit from the customization mechanism of the list item rendering.
+Main features:
+* Allows to benefit from the customization mechanism of the list item rendering.
 * Provides single and multiple selection modes.
 * Provides optional interactive filtering of list of options (single selection mode only). 
-* The rendering of the popup is multi-channel responsive: by default, the popup is displayed
-on desktop below/above the main element, while on mobile it is displayed in a centered
-overlay (an instance of deliteful/Combobox/ComboPopup is used in this case).
-
+* Multichannel responsive rendering.
 
 *Example of deliteful/Combobox (single choice mode, on desktop browser):*
 
@@ -128,7 +125,7 @@ The default filtering policy can be customized using the `filterMode` and
 `ignoreCase` properties.
 
 The valid values of `filterMode` are:
-		 
+
 * `"startsWith"`: the item matches if its label starts with the filter text.
 * `"contains"`: the item matches if its label contains the filter text.
 * `"is"`: the item matches if its label is the filter text.
@@ -141,7 +138,7 @@ while the user types into the editable input element, with `filterTxt` being the
 entered text. The default implementation of this method uses `dstore/Filter.match()`.
 The matching is performed against the `list.labelAttr` attribute of the data store items.
 The method can be overridden for implementing other filtering strategies.
-		 
+
 ### Attribute Mapping
 
 The customization of the mapping of data store item attributes into render item attributes
@@ -153,6 +150,20 @@ See the [`delite/StoreMap`](/delite/docs/master/StoreMap.md) documentation for
 more information about the available mapping options, and the section
 [`Store capabilities`](/deliteful/docs/master/list/List.md#store-capabilities) of
 List's documentation.
+
+### Multichannel responsivness
+
+The Combobox widget is multichannel responsive: the popup is displayed on
+large screens (desktop-like) below/above the main element, while on small and medium
+screens (phone-like and tablet-like), to optimize the usage of the available space,
+the popup is displayed in a centered overlay (an instance of deliteful/Combobox/ComboPopup 
+is used in this case).
+
+The channel is controlled by the value of the `has()` channel flags set by
+`deliteful/features` using CSS media queries.
+See the [`deliteful/features`](/deliteful/docs/master/features.md) documentation
+for information about how to configure the channel and about how to customize
+the values of the screen size breakpoints used by the media queries.
 
 ### Value and form support
 
@@ -238,7 +249,7 @@ Keyboard and screen reader accessibility will be supported in the next release.
 
 `deliteful/Combobox` provides an internationalizable bundle that contains the following
 messages:
-		
+
 |Key|Role|
 |----------|----------|
 |"multiple-choice"|Text written in the combo in multiple selection mode if more than one item is selected.
@@ -252,7 +263,7 @@ The first 3 strings in the table above are used as default values for the widget
 To customize these strings on a per-widget basis, set directly these properties.
 
 Right to left orientation is supported by setting the `dir` attribute to `rtl` on the
-widget. 
+widget.
 
 ### Security
 

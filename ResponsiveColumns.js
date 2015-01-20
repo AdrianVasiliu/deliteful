@@ -3,7 +3,7 @@ define([
 	"requirejs-dplugins/jquery!attributes/classes",
 	"delite/register",
 	"delite/DisplayContainer",
-	"./channelPolicy",
+	"./features",
 	"delite/theme!./ResponsiveColumns/themes/{{theme}}/ResponsiveColumns.css"
 ], function ($, register, DisplayContainer, has) {
 	/**
@@ -39,10 +39,30 @@ define([
 			 * To facilitate writing markup you can use single quotes when defining this property, single quotes
 			 * will be replaced by double quotes before interpreted by `JSON.parse`.
 			 *
+			 * The default value of `breakpoints` uses three breakpoints: `small`, `medium`, and `large`.
+			 * The value of `large` is an empty string. The default values of the breakpoints `small`
+			 * and `medium` are determined by the values of the `has()` flags `"breakpoint-small-screen"`
+			 * and `"breakpoint-medium-screen"` from deliteful/features, and can be configured globally
+			 * using `require.config()`, for instance:
+			 * ```html
+			 * <script>
+			 *   // configuring RequireJS
+			 *   require.config({
+			 *     ...
+			 *     config: {
+			 *       "requirejs-dplugins/has": {
+			 *         "breakpoint-small-screen": "280px",
+			 *         "breakpoint-medium-screen: "724px"
+			 *       }
+			 *     }
+			 *   });
+			 * </script>
+			 * ```
 			 * @member {string}
-			 * @default "{'small': '480px', 'medium': '1024px', large: ''}"
+			 * @default "{'small': '480px', 'medium': '1024px', 'large': ''}"
 			 */
-			breakpoints: JSON.stringify(has("channel-breakpoints")), // "{'small': '480px', 'medium': '1024px', 'large': ''}",
+			breakpoints: "{'small': '" + has("breakpoint-small-screen") + 
+				"', 'medium': '" + has("breakpoint-medium-screen") + "', 'large': ''}",
 
 			/**
 			 * The current screen class currently applied by the container.
