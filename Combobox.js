@@ -12,8 +12,7 @@ define([
 	"./features!desktop-like-channel?:./Combobox/ComboPopup",
 	"delite/handlebars!./Combobox/Combobox.html",
 	"requirejs-dplugins/i18n!./Combobox/nls/Combobox",
-	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css",
-	"ecma402/locales"
+	"delite/theme!./Combobox/themes/{{theme}}/Combobox.css"
 ], function (dcl, $, Filter, has, register, FormValueWidget, HasDropDown,
 		keys, List, ComboPopup, template, messages) {
 	/**
