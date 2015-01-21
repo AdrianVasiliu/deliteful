@@ -19,7 +19,7 @@ define([
 		},
 
 		"Custom config" : function () {
-			var moduleRequire = require.config({
+			var configRequire = require.config({
 				context: "configTest",
 				// baseUrl is relative to deliteful/node_modules/intern/
 				baseUrl: "../../..",
@@ -33,7 +33,7 @@ define([
 			
 			var dfd = this.async();
 
-			moduleRequire(["deliteful/channelBreakpoints"],
+			configRequire(["deliteful/channelBreakpoints"],
 				dfd.callback(function (channelBreakpoints) {
 					assert.strictEqual(channelBreakpoints.smallScreen, "314px",
 						"custom config of smallScreen");
