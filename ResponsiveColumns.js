@@ -61,7 +61,6 @@ define([
 			screenClass: "",
 
 			preRender: function () {
-				var _has = has;
 				this._breakpoints = {};
 				this._layouts = [];
 				// A set of MediaQueryList
