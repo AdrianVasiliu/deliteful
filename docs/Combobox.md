@@ -6,7 +6,7 @@ title: deliteful/Combobox
 # deliteful/Combobox
 
 `deliteful/Combobox` is a form-aware and store-aware widget leveraging the 
-[`deliteful/list/List`](/deliteful/docs/master/list/List.md) widget for
+[`deliteful/list/List`](./list/List.md) widget for
 displaying the list of options. 
 
 Main features:
@@ -143,13 +143,12 @@ The method can be overridden for implementing other filtering strategies.
 
 The customization of the mapping of data store item attributes into render item attributes
 can be done on the List instance using the mapping API of 
-[`deliteful/list/List`](/deliteful/docs/master/list/List.md), as supported by its superclass
+[`deliteful/list/List`](./list/List.md), as supported by its superclass
 `delite/StoreMap`.
 
 See the [`delite/StoreMap`](/delite/docs/master/StoreMap.md) documentation for
 more information about the available mapping options, and the section
-[`Store capabilities`](/deliteful/docs/master/list/List.md#store-capabilities) of
-List's documentation.
+[`Store capabilities`](./list/List.md#store) of List's documentation.
 
 ### Multichannel responsivness
 
@@ -161,9 +160,10 @@ is used in this case).
 
 The channel is controlled by the value of the `has()` channel flags set by
 `deliteful/features` using CSS media queries depending on the screen size.
-See the [`deliteful/features`](/deliteful/docs/master/features.md) documentation
-for information about how to configure the channel and about how to customize
-the values of the screen size breakpoints used by the media queries.
+See the [`deliteful/features`](./features.md) documentation
+for information about how to configure the channel. Also, see the 
+[`deliteful/channelBreakpoints`](./channelBreakpoints.md) documentation for information
+about how to customize the values of the screen size breakpoints used by the media queries.
 
 ### Value and form support
 

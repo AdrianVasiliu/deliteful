@@ -3,9 +3,9 @@ define([
 	"requirejs-dplugins/jquery!attributes/classes",
 	"delite/register",
 	"delite/DisplayContainer",
-	"./features",
+	"./channelBreakpoints",
 	"delite/theme!./ResponsiveColumns/themes/{{theme}}/ResponsiveColumns.css"
-], function ($, register, DisplayContainer, has) {
+], function ($, register, DisplayContainer, channelBreakpoints) {
 	/**
 	 * A container that lays out its children according to the screen width. This widget relies on CSS media queries
 	 * (http://www.w3.org/TR/css3-mediaqueries). You can define any number of screen classes by setting the breakpoints
@@ -41,14 +41,15 @@ define([
 			 *
 			 * The default value of `breakpoints` uses three breakpoints: `small`, `medium`, and `large`.
 			 * The value of `large` is an empty string. The default values of the breakpoints `small`
-			 * and `medium` are determined by the values of the `has()` flags `"breakpoint-small-screen"`
-			 * and `"breakpoint-medium-screen"` set by `deliteful/features`, and can be configured globally
-			 * using `require.config()`. For details, see the documentation of `deliteful/features`.
+			 * and `medium` are determined by the values of properties `smallScreen"` and `"mediumScreen"`
+			 * of `deliteful/channelBreakpoints`, and can be configured statically using `require.config()`.
+			 * For details, see the documentation of `deliteful/channelBreakpoints`.
 			 * @member {string}
 			 * @default "{'small': '480px', 'medium': '1024px', 'large': ''}"
 			 */
-			breakpoints: "{'small': '" + has("breakpoint-small-screen") + 
-				"', 'medium': '" + has("breakpoint-medium-screen") + "', 'large': ''}",
+			breakpoints: "{'small': '" + channelBreakpoints.smallScreen +
+				"', 'medium': '" + channelBreakpoints.mediumScreen +
+				"', 'large': ''}",
 
 			/**
 			 * The current screen class currently applied by the container.
@@ -60,6 +61,7 @@ define([
 			screenClass: "",
 
 			preRender: function () {
+				var _has = has;
 				this._breakpoints = {};
 				this._layouts = [];
 				// A set of MediaQueryList

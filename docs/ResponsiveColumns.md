@@ -97,9 +97,9 @@ Each child must have a `layout` property that defines values for "small", "mediu
 Both `breakpoints` and `layout` properties are strings parsed internally by the standard `JSON.parse()`. To facilitate writing markup you can use single quotes when defining these properties, single quotes will be replaced by double quotes before interpreted by `JSON.parse`.
 
 Note that the widget computes the default value of its `breakpoints` property using the 
-values of the `has()` flags `"breakpoint-small-screen"` and `"breakpoint-medium-screen"` from
-`deliteful/features`. See the [`deliteful/features`](./features.md) documentation
-for information about how to customize these default breakpoint values globally.
+values of the breakpoins provided by the `deliteful/channelBreakpoints` module. 
+See the [`deliteful/channelBreakpoints`](./channelBreakpoints.md) documentation
+for information about how to statically customize these default breakpoint values.
  
 <a name="events"></a>
 ## Events
